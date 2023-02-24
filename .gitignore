@@ -10,4 +10,5 @@
 
 ###> misc ###
 /.idea
+/requests/http-client.private.env.json
 ###< misc ###

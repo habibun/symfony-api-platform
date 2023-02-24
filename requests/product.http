@@ -1,0 +1,47 @@
+
+###
+GET {{baseUrl}}/api/products
+Accept: application/json
+
+
+
+###
+GET {{baseUrl}}/api/products/{{productId}}
+Accept: application/json
+
+
+
+###
+POST {{baseUrl}}/api/products
+Content-Type: application/json
+
+{
+"name" : "product 1",
+"price" : "10.26",
+"description" : "description 1",
+"created" : "2023-02-25"
+ }
+
+> {%
+    client.global.set("productId", response.body.id);
+%}
+
+
+###
+PUT {{baseUrl}}/api/products/{{productId}}
+Content-Type: application/json
+
+< ./input_put.json
+
+
+
+###
+PATCH {{baseUrl}}/api/products/{{productId}}
+Content-Type: application/merge-patch+json
+
+< ./input_patch.json
+
+
+
+###
+DELETE {{baseUrl}}/api/products/{{productId}}
