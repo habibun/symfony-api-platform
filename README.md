@@ -1,7 +1,6 @@
 ## About The Project  
 [Symfony][symfony_website] with [API Platform][api_platform_website]
-
-In this repository, every branch holds a separate example project except the main branch.  
+ 
 Please check the [projects](#projects) section for more details.
 
 ## Overview
