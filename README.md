@@ -7,7 +7,7 @@ Please check the [projects](#projects) section for more details.
 ## Overview
 | Branch   | API Platform Version | Symfony Version | PHP Version |
 |----------|----------------------|-----------------|-------------|
-| [v2][v2] | `^2.x`               | `^5.4`          | `^8.0`      |
+| [v2][v2] | `^2.7`               | `^5.4`          | `^8.0`      |
 
 
 ## Projects
