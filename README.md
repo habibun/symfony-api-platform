@@ -41,7 +41,7 @@ symfony server:start
 ## Learn More
 - [API Platform Docs][api_platform_docs]
 - [Swagger Docs][swagger_docs]
-- [Swagger UI][https://swagger.io/tools/swagger-ui/]
+- [Swagger UI](https://swagger.io/tools/swagger-ui/)
 
 
 ## Related
