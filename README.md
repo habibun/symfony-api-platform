@@ -39,8 +39,8 @@ symfony server:start
 
 
 ## Learn More
-- [API Platform Docs](https://api-platform.com/docs)
-- [API Platform Github Org][api_platform_github_org]
+- [API Platform Docs][api_platform_docs]
+- [Swagger Docs][swagger_docs]
 
 
 ## Related
@@ -58,7 +58,7 @@ Distributed under the MIT License. See **[LICENSE][license]** for more informati
 
 [api_platform_website]: https://api-platform.com/
 [api_platform_docs]: https://api-platform.com/docs
-[api_platform_github_org]: https://github.com/api-platform
+[swagger_docs]: https://swagger.io/docs/
 
 [v2]: https://github.com/habibun/symfony-api-platform/tree/v2
 [v2_tt]: https://github.com/habibun/symfony-api-platform/tree/v2 "Sample application using API Platform V2"
