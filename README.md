@@ -42,6 +42,9 @@ symfony server:start
 - [API Platform Docs][api_platform_docs]
 - [Swagger Docs][swagger_docs]
 - [Swagger UI](https://swagger.io/tools/swagger-ui/)
+- [RDF](https://www.w3.org/RDF/)
+- [JSON-LD](https://en.wikipedia.org/wiki/JSON-LD)
+- [OpenAPI Specification](https://oai.github.io/Documentation/)
 
 
 ## Related
