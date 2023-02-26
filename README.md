@@ -45,6 +45,7 @@ symfony server:start
 - [RDF](https://www.w3.org/RDF/)
 - [JSON-LD](https://en.wikipedia.org/wiki/JSON-LD)
 - [OpenAPI Specification](https://oai.github.io/Documentation/)
+- [Hydra](https://www.hydra-cg.com/)
 
 
 ## Related
