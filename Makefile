@@ -1,6 +1,6 @@
 .PHONY: install
 install: ## install project
-	cp .env .env.local
+	cp -u -p .env .env.local
 	symfony composer install
 	symfony console doctrine:database:drop --force
 	symfony console doctrine:database:create
