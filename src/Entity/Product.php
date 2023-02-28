@@ -33,6 +33,7 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
     ],
     normalizationContext: ['groups' => ['product:read'], 'swagger_definition_name' => 'Read'],
     denormalizationContext:  ['groups' => ['product:write'], 'swagger_definition_name' => 'Write'],
+    paginationItemsPerPage: 10,
 )]
 #[ApiFilter(BooleanFilter::class, properties: ['isActive'])]
 #[ApiFilter(SearchFilter::class, properties: ['name' => 'partial', 'description' => 'partial'])]
