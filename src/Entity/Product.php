@@ -13,6 +13,7 @@ use Carbon\Carbon;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
 #[ApiResource(
@@ -108,6 +109,7 @@ class Product
 
     /** Description of product as raw text. */
     #[Groups(['product:write'])]
+    #[SerializedName('description')]
     public function setTextDescription(?string $description): self
     {
         $this->description = nl2br($description);
