@@ -47,6 +47,7 @@ symfony server:start
 - [OpenAPI Specification](https://oai.github.io/Documentation/)
 - [Hydra](https://www.hydra-cg.com/)
 - [A simple PHP API extension for DateTime](https://github.com/briannesbitt/carbon)
+- [The Serializer Component](https://symfony.com/doc/5.4/components/serializer.html)
 
 ## Related
 - [Symfony](https://github.com/habibun/symfony)  
