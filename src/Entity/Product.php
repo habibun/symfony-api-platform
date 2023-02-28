@@ -2,10 +2,14 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\BooleanFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\Repository\ProductRepository;
@@ -20,6 +24,7 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
     operations: [
         new Get(),
         new Put(),
+        new Patch(),
         new Delete(),
         new GetCollection(),
         new Post(),
@@ -27,6 +32,8 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
     normalizationContext: ['groups' => ['product:read'], 'swagger_definition_name' => 'Read'],
     denormalizationContext:  ['groups' => ['product:write'], 'swagger_definition_name' => 'Write'],
 )]
+#[ApiFilter(BooleanFilter::class, properties: ['isActive'])]
+#[ApiFilter(SearchFilter::class, properties: ['name' => 'partial', 'description' => 'partial'])]
 class Product
 {
     #[ORM\Id]
