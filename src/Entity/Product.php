@@ -12,6 +12,7 @@ use App\Repository\ProductRepository;
 use Carbon\Carbon;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
 #[ApiResource(
@@ -21,24 +22,29 @@ use Doctrine\ORM\Mapping as ORM;
         new Delete(),
         new GetCollection(),
         new Post(),
-    ]
+    ],
+    normalizationContext: ['groups' => ['product:read'], 'swagger_definition_name' => 'Read'],
+    denormalizationContext:  ['groups' => ['product:write'], 'swagger_definition_name' => 'Write'],
 )]
 class Product
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    private int $id;
 
+    #[Groups(['product:read','product:write'])]
     #[ORM\Column(length: 255)]
-    private ?string $name = null;
+    private string $name;
 
+    #[Groups(['product:read', 'product:write'])]
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: '0')]
-    private ?string $price = null;
+    private float $price = 0;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $created;
 
+    #[Groups(['product:read'])]
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
@@ -50,12 +56,12 @@ class Product
         $this->created = new \DateTimeImmutable();
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -72,7 +78,7 @@ class Product
         return $this->price;
     }
 
-    public function setPrice(string $price): self
+    public function setPrice(float $price): self
     {
         $this->price = $price;
 
@@ -84,6 +90,7 @@ class Product
         return $this->created;
     }
 
+    #[Groups(['product:read'])]
     public function getCreatedAgo(): string
     {
         return Carbon::instance($this->getCreated())->diffForHumans();
@@ -94,6 +101,13 @@ class Product
         return $this->description;
     }
 
+    public function setDescription(?string $description): void
+    {
+        $this->description = $description;
+    }
+
+    /** Description of product as raw text. */
+    #[Groups(['product:write'])]
     public function setTextDescription(?string $description): self
     {
         $this->description = nl2br($description);
