@@ -9,6 +9,7 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\Repository\ProductRepository;
+use Carbon\Carbon;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -36,13 +37,18 @@ class Product
     private ?string $price = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $created = null;
+    private ?\DateTimeInterface $created;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
     #[ORM\Column]
     private bool $isActive = true;
+
+    public function __construct()
+    {
+        $this->created = new \DateTimeImmutable();
+    }
 
     public function getId(): ?int
     {
@@ -78,11 +84,9 @@ class Product
         return $this->created;
     }
 
-    public function setCreated(\DateTimeInterface $created): self
+    public function getCreatedAgo(): string
     {
-        $this->created = $created;
-
-        return $this;
+        return Carbon::instance($this->getCreated())->diffForHumans();
     }
 
     public function getDescription(): ?string
@@ -90,9 +94,9 @@ class Product
         return $this->description;
     }
 
-    public function setDescription(?string $description): self
+    public function setTextDescription(?string $description): self
     {
-        $this->description = $description;
+        $this->description = nl2br($description);
 
         return $this;
     }
