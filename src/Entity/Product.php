@@ -20,6 +20,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\SerializedName;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
 #[ApiResource(
@@ -47,10 +48,19 @@ class Product
     #[ORM\Column]
     private int $id;
 
+    #[Assert\NotBlank]
+    #[Assert\Length(
+        [
+            'min' => 2,
+            'max' => 50,
+            'maxMessage'=>"Describe your name in 50 chars or less"
+        ]
+    )]
     #[Groups(['product:read','product:write'])]
     #[ORM\Column(length: 255)]
     private string $name;
 
+    #[Assert\NotBlank]
     #[Groups(['product:read', 'product:write'])]
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: '0')]
     private float $price = 0;
