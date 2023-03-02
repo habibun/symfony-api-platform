@@ -75,6 +75,11 @@ class Product
     #[ORM\Column]
     private bool $isActive = true;
 
+    #[ORM\ManyToOne(inversedBy: 'products')]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['product:read', 'product:write'])]
+    private ?User $manufacturer = null;
+
     public function __construct()
     {
         $this->created = new \DateTimeImmutable();
@@ -158,6 +163,18 @@ class Product
     public function setIsActive(bool $isActive): self
     {
         $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    public function getManufacturer(): ?User
+    {
+        return $this->manufacturer;
+    }
+
+    public function setManufacturer(?User $manufacturer): self
+    {
+        $this->manufacturer = $manufacturer;
 
         return $this;
     }
