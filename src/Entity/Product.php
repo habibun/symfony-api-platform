@@ -78,6 +78,7 @@ class Product
     #[ORM\ManyToOne(inversedBy: 'products')]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['product:read', 'product:write'])]
+    #[Assert\Valid]
     private ?User $manufacturer = null;
 
     public function __construct()
