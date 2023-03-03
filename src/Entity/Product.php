@@ -75,8 +75,8 @@ class Product
     #[ORM\Column]
     private bool $isActive = true;
 
-    #[ORM\ManyToOne(inversedBy: 'products')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'products')]
+    #[ORM\JoinColumn(name: 'manufacturer_id', referencedColumnName: 'id', nullable: false)]
     #[Groups(['product:read', 'product:write'])]
     #[Assert\Valid]
     private ?User $manufacturer = null;
