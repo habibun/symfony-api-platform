@@ -38,7 +38,12 @@ use Symfony\Component\Validator\Constraints as Assert;
     paginationItemsPerPage: 10
 )]
 #[ApiFilter(BooleanFilter::class, properties: ['isActive'])]
-#[ApiFilter(SearchFilter::class, properties: ['name' => 'partial', 'description' => 'partial'])]
+#[ApiFilter(SearchFilter::class, properties: [
+    'name' => 'partial',
+    'description' => 'partial',
+    'manufacturer' => 'exact',
+    'manufacturer.username' => 'partial',
+])]
 #[ApiFilter(RangeFilter::class, properties: ['price'])]
 #[ApiFilter(PropertyFilter::class)]
 class Product
