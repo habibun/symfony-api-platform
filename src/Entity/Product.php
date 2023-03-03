@@ -25,7 +25,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
 #[ApiResource(
     operations: [
-        new Get(),
+        new Get(normalizationContext: ['groups' => ['product:read', 'product:item:get']]),
         new Put(),
         new Patch(),
         new Delete(),
@@ -56,12 +56,12 @@ class Product
             'maxMessage'=>"Describe your name in 50 chars or less"
         ]
     )]
-    #[Groups(['product:read','product:write'])]
+    #[Groups(['product:read','product:write', 'user:read'])]
     #[ORM\Column(length: 255)]
     private string $name;
 
     #[Assert\NotBlank]
-    #[Groups(['product:read', 'product:write'])]
+    #[Groups(['product:read', 'product:write', 'user:read'])]
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: '0')]
     private float $price = 0;
 
