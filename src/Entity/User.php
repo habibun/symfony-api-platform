@@ -49,8 +49,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\NotBlank]
     private ?string $username = null;
 
-    #[ORM\OneToMany(mappedBy: 'manufacturer', targetEntity: Product::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'manufacturer', targetEntity: Product::class, orphanRemoval: true, cascade: ['persist'])]
     #[Groups(['user:read', 'user:write'])]
+    #[Assert\Valid]
     private Collection $products;
 
     public function __construct()

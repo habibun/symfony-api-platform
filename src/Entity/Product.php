@@ -56,19 +56,19 @@ class Product
             'maxMessage'=>"Describe your name in 50 chars or less"
         ]
     )]
-    #[Groups(['product:read','product:write', 'user:read'])]
+    #[Groups(['product:read','product:write', 'user:read', 'user:write'])]
     #[ORM\Column(length: 255)]
     private string $name;
 
     #[Assert\NotBlank]
-    #[Groups(['product:read', 'product:write', 'user:read'])]
+    #[Groups(['product:read', 'product:write', 'user:read', 'user:write'])]
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: '0')]
     private float $price = 0;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $created;
 
-    #[Groups(['product:read'])]
+    #[Groups(['product:read', 'user:write'])]
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
@@ -147,7 +147,7 @@ class Product
     }
 
     /** Description of product as raw text. */
-    #[Groups(['product:write'])]
+    #[Groups(['product:write', 'user:write'])]
     #[SerializedName('description')]
     public function setTextDescription(?string $description): self
     {
