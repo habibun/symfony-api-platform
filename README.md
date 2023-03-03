@@ -30,7 +30,6 @@ git clone git@github.com:habibun/symfony-api-platform.git
 cd symfony-api-platform
 git checkout v2
 symfony composer install
-yarn install
 symfony server:start
 ```
 
