@@ -50,6 +50,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $username = null;
 
     #[ORM\OneToMany(mappedBy: 'manufacturer', targetEntity: Product::class, orphanRemoval: true)]
+    #[Groups(['user:read'])]
     private Collection $products;
 
     public function __construct()
