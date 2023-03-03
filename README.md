@@ -14,7 +14,7 @@ Please check the [projects](#projects) section for more details.
 <p>  
 
 <img
-src="url"
+src="src="https://user-images.githubusercontent.com/5810350/222693930-e6653b71-1797-4bf8-97e9-9e7a35bbc356.png""
 alt="Symfony API Platform Project"
 width="50%"
 />
