@@ -33,8 +33,6 @@ git clone git@github.com:habibun/symfony-api-platform.git
 cd symfony-api-platform
 git checkout v2
 symfony composer install
-yarn install
-symfony server:start
 ```
 
 </p>
@@ -44,7 +42,7 @@ symfony server:start
 <p>  
 
 <img
-src="url"
+src="https://user-images.githubusercontent.com/5810350/222693930-e6653b71-1797-4bf8-97e9-9e7a35bbc356.png"
 alt="Symfony API Platform Project"
 width="50%"
 />
@@ -60,8 +58,6 @@ git clone git@github.com:habibun/symfony-api-platform.git
 cd symfony-api-platform
 git checkout v2
 symfony composer install
-yarn install
-symfony server:start
 ```
 
 </p>
@@ -71,7 +67,13 @@ symfony server:start
 ## Learn More
 - [API Platform Docs][api_platform_docs]
 - [Swagger Docs][swagger_docs]
-
+- [Swagger UI](https://swagger.io/tools/swagger-ui/)
+- [RDF](https://www.w3.org/RDF/)
+- [JSON-LD](https://en.wikipedia.org/wiki/JSON-LD)
+- [OpenAPI Specification](https://oai.github.io/Documentation/)
+- [Hydra](https://www.hydra-cg.com/)
+- [A simple PHP API extension for DateTime](https://github.com/briannesbitt/carbon)
+- [The Serializer Component](https://symfony.com/doc/5.4/components/serializer.html)
 
 ## Related
 - [Symfony](https://github.com/habibun/symfony)  
