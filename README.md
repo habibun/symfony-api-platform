@@ -47,6 +47,7 @@ alt="Symfony API Platform Project"
 width="50%"
 />
 
+**Code:** https://github.com/habibun/symfony-api-platform/tree/v2  
 **Resources:**
 - [API Platform 2: Serious RESTful APIs](https://symfonycasts.com/screencast/api-platform2)
   <br/>
