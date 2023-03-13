@@ -4,12 +4,42 @@
 Please check the [projects](#projects) section for more details.
 
 ## Overview
-| Branch   | API Platform Version | Symfony Version | PHP Version |
-|----------|----------------------|-----------------|-------------|
-| [v2][v2] | `^2.7`               | `^5.4`          | `^8.0`      |
+| Branch                     | API Platform Version | Symfony Version | PHP Version |
+|----------------------------|----------------------|-----------------|-------------|
+| [v2-security][v2-security] | `^2.7`               | `^5.4`          | `^8.0`      |
+| [v2][v2]                   | `^2.7`               | `^5.4`          | `^8.0`      |
 
 
 ## Projects
+
+<details><summary>Sample application using API Platform V2 Security</summary>  
+<p>  
+
+<img
+src="url"
+alt="Symfony API Platform Project With Security"
+width="50%"
+/>
+
+**Code:** https://github.com/habibun/symfony-api-platform/tree/v2-security  
+**Resources:**
+- [API Platform Part 2: Security](https://symfonycasts.com/screencast/api-platform2-security)
+<br/>
+
+
+#### Installation
+```bash
+git clone git@github.com:habibun/symfony-api-platform.git
+cd symfony-api-platform
+git checkout v2
+symfony composer install
+yarn install
+symfony server:start
+```
+
+</p>
+</details>
+
 <details><summary>Sample application using API Platform V2</summary>  
 <p>  
 
@@ -62,3 +92,6 @@ Distributed under the MIT License. See **[LICENSE][license]** for more informati
 
 [v2]: https://github.com/habibun/symfony-api-platform/tree/v2
 [v2_tt]: https://github.com/habibun/symfony-api-platform/tree/v2 "Sample application using API Platform V2"
+
+[v2-security]: https://github.com/habibun/symfony-api-platform/tree/v2-security
+[v2-security_tt]: https://github.com/habibun/symfony-api-platform/tree/v2-security "Sample application using API Platform V2 Securiity"
