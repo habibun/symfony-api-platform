@@ -14,6 +14,7 @@
         {% endblock %}
     </head>
     <body>
+        <div id="app" data-is-authenticated="{{ isAuthenticated }}" data-user="{{ user }}"></div>
         {% block body %}{% endblock %}
     </body>
 </html>
