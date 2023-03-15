@@ -7,6 +7,7 @@
       >
         App
       </router-link>
+      <p>Logged in as: {{ user.username }}</p>
       <button
         class="navbar-toggler"
         type="button"
@@ -64,6 +65,9 @@ export default {
   computed: {
     isAuthenticated() {
       return this.$store.getters["security/isAuthenticated"]
+    },
+    user() {
+      return this.$store.state.security.user;
     },
   },
   created() {

@@ -1,4 +1,5 @@
 import SecurityAPI from "../api/security";
+import axios from "axios";
 
 const AUTHENTICATING = "AUTHENTICATING",
   AUTHENTICATING_SUCCESS = "AUTHENTICATING_SUCCESS",
@@ -63,8 +64,9 @@ export default {
       commit(AUTHENTICATING);
       try {
         let response = await SecurityAPI.login(payload.login, payload.password);
-        commit(AUTHENTICATING_SUCCESS, response.data);
-        return response.data;
+        let details = await axios.get(response.headers.location);
+        commit(AUTHENTICATING_SUCCESS, details.data);
+        return details.data;
       } catch (error) {
         commit(AUTHENTICATING_ERROR, error);
         return null;
