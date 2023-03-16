@@ -9,9 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class SecurityController extends AbstractController
 {
-    /**
-     * @Route("/api/login", name="app_login", methods={"POST"})
-     */
+    #[Route('/api/login', name: 'app_login', methods: ['POST'])]
     public function login(IriConverterInterface $iriConverter)
     {
         if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
@@ -25,4 +23,9 @@ class SecurityController extends AbstractController
         ]);
     }
 
+    #[Route('/api/logout', name: 'app_logout', methods: ['GET'])]
+    public function logout()
+    {
+        throw new \LogicException('Should not be reached');
+    }
 }

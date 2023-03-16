@@ -7,7 +7,9 @@
       >
         App
       </router-link>
-      <p>Logged in as: {{ user.username }}</p>
+      <p>
+        {{ user ? 'Logged in as:' + user.username : '' }}
+      </p>
       <button
         class="navbar-toggler"
         type="button"
@@ -46,8 +48,16 @@
           >
             <a
               class="nav-link"
-              href="/api/security/logout"
+              href="/api/logout"
             >Logout</a>
+          </li><li
+            v-if="!isAuthenticated"
+            class="nav-item"
+          >
+            <a
+              class="nav-link"
+              href="/login"
+            >Login</a>
           </li>
         </ul>
       </div>
@@ -67,7 +77,11 @@ export default {
       return this.$store.getters["security/isAuthenticated"]
     },
     user() {
-      return this.$store.state.security.user;
+      if (this.$store.getters["security/isAuthenticated"]) {
+        return this.$store.state.security.user;
+      }
+
+      return null;
     },
   },
   created() {
