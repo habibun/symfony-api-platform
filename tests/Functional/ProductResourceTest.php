@@ -9,6 +9,10 @@ class ProductResourceTest extends ApiTestCase
     // test create product
     public function testCreateProduct()
     {
-        $this->assertEquals(42, 42);
+        $client = self::createClient();
+        $client->request('POST', '/api/products', [], [], [], [
+
+        ]);
+        $this->assertResponseStatusCodeSame(201);
     }
 }
