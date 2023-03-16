@@ -4,9 +4,12 @@ namespace App\Tests\Functional;
 
 use ApiPlatform\Symfony\Bundle\Test\ApiTestCase;
 use App\Entity\User;
+use Hautelook\AliceBundle\PhpUnit\ReloadDatabaseTrait;
 
 class ProductResourceTest extends ApiTestCase
 {
+    use ReloadDatabaseTrait;
+
     // test create product
     public function testCreateProduct()
     {
