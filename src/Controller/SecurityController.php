@@ -29,3 +29,4 @@ class SecurityController extends AbstractController
         throw new \LogicException('Should not be reached');
     }
 }
+
