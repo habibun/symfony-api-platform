@@ -30,7 +30,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Patch(security: 'is_granted("ROLE_USER")'),
         new Delete(security: 'is_granted("ROLE_ADMIN")'),
         new GetCollection(),
-        new Post(),
+        new Post(security: 'is_granted("ROLE_USER")'),
     ],
     formats: ['jsonld', 'json', 'html', 'jsonhal', 'csv' => ['text/csv']],
     normalizationContext: ['groups' => ['product:read'], 'swagger_definition_name' => 'Read'],
