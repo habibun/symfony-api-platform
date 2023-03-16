@@ -25,10 +25,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
 #[ApiResource(
     operations: [
-        new Get(normalizationContext: ['groups' => ['product:read', 'product:item:get']]),
-        new Put(),
-        new Patch(),
-        new Delete(),
+        new Get(normalizationContext: ['groups' => ['product:read', 'product:item:get']], security: 'is_granted("ROLE_USER")'),
+        new Put(security: 'is_granted("ROLE_USER")'),
+        new Patch(security: 'is_granted("ROLE_USER")'),
+        new Delete(security: 'is_granted("ROLE_ADMIN")'),
         new GetCollection(),
         new Post(),
     ],

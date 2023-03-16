@@ -50,7 +50,17 @@
               class="nav-link"
               href="/api/logout"
             >Logout</a>
-          </li><li
+          </li>
+          <li
+            class="nav-item"
+          >
+            <a
+              class="nav-link"
+              href="/api"
+              target="_blank"
+            >API Docs</a>
+          </li>
+          <li
             v-if="!isAuthenticated"
             class="nav-item"
           >
