@@ -26,7 +26,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ApiResource(
     operations: [
         new Get(normalizationContext: ['groups' => ['product:read', 'product:item:get']], security: 'is_granted("ROLE_USER")'),
-        new Put(security: 'is_granted("ROLE_USER")'),
+        new Put(security: 'is_granted("ROLE_USER") and object.getManufacturer() == user', securityMessage: 'You do not have permission to edit this product.'),
         new Patch(security: 'is_granted("ROLE_USER")'),
         new Delete(security: 'is_granted("ROLE_ADMIN")'),
         new GetCollection(),
@@ -146,9 +146,11 @@ class Product
         return substr($this->description, 0, 40) . '...';
     }
 
-    public function setDescription(?string $description): void
+    public function setDescription(?string $description): Product
     {
         $this->description = $description;
+
+        return $this;
     }
 
     /** Description of product as raw text. */
