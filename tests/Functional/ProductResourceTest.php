@@ -42,6 +42,7 @@ class ProductResourceTest extends CustomApiTestCase
         $client->request('PUT', '/api/products/'.$product->getId(), [
             'json' => [
                 'description' => 'new description',
+                'manufacture' => '/api/users/'.$user2->getId()
             ]
         ]);
 

@@ -2,9 +2,15 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
 use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use ApiPlatform\Serializer\Filter\PropertyFilter;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -17,8 +23,17 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
-    denormalizationContext: ['groups' => ['user:write']],
+    operations: [
+        new Get(security: 'is_granted("ROLE_USER")'),
+        new Put(security: 'is_granted("ROLE_USER") and object== user'),
+        new Patch(security: 'is_granted("ROLE_USER") and object== user'),
+        new Delete(security: 'is_granted("ROLE_ADMIN")'),
+        new GetCollection(security: 'is_granted("ROLE_USER")'),
+        new Post(security: 'is_granted("IS_AUTHENTICATED_ANONYMOUSLY")'),
+    ],
     normalizationContext: ['groups' => ['user:read']],
+    denormalizationContext: ['groups' => ['user:write']],
+    security: 'is_granted("ROLE_USER")'
 )]
 #[UniqueEntity("email")]
 #[UniqueEntity("username")]
