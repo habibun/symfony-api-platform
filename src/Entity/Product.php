@@ -26,7 +26,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ApiResource(
     operations: [
         new Get(normalizationContext: ['groups' => ['product:read', 'product:item:get']], security: 'is_granted("ROLE_USER")'),
-        new Put(security: 'is_granted("ROLE_USER") and previous_object.getManufacturer() == user', securityMessage: 'You do not have permission to edit this product.'),
+        new Put(security: 'is_granted("PRODUCT_EDIT", previous_object)', securityMessage: 'You do not have permission to edit this product.'),
         new Patch(security: 'is_granted("ROLE_USER")'),
         new Delete(security: 'is_granted("ROLE_ADMIN")'),
         new GetCollection(),
