@@ -16,3 +16,6 @@ symfony console doctrine:database:create --env=test
 
 # create table for test
 symfony console doctrine:schema:create --env=test
+
+# find autowiring
+symfony console debug:autowiring pass

@@ -12,6 +12,7 @@ use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use ApiPlatform\Serializer\Filter\PropertyFilter;
+use App\DataPersister\UserProcessor;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -20,20 +21,22 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
     operations: [
         new Get(security: 'is_granted("ROLE_USER")'),
-        new Put(security: 'is_granted("ROLE_USER") and object== user'),
-        new Patch(security: 'is_granted("ROLE_USER") and object== user'),
+        new Put(security: 'is_granted("ROLE_USER") and object==user'),
+        new Patch(security: 'is_granted("ROLE_USER") and object==user'),
         new Delete(security: 'is_granted("ROLE_ADMIN")'),
         new GetCollection(security: 'is_granted("ROLE_USER")'),
         new Post(security: 'is_granted("IS_AUTHENTICATED_ANONYMOUSLY")'),
     ],
     normalizationContext: ['groups' => ['user:read']],
     denormalizationContext: ['groups' => ['user:write']],
-    security: 'is_granted("ROLE_USER")'
+    security: 'is_granted("ROLE_USER")',
+    processor: UserProcessor::class
 )]
 #[UniqueEntity("email")]
 #[UniqueEntity("username")]
@@ -56,15 +59,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private array $roles = [];
 
-    #[Groups(['user:write'])]
-    /**
-     * @var string The hashed password
-     */
     #[ORM\Column]
     private ?string $password = null;
 
     #[Groups('user:write')]
-    private $plainPassword;
+    #[SerializedName('password')]
+    private ?string $plainPassword;
 
     #[Groups(['user:read', 'user:write', 'product:item:get', 'product:write'])]
     #[ORM\Column(length: 255, unique: true)]
@@ -139,12 +139,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @see PasswordAuthenticatedUserInterface
      */
-    public function getPassword(): string
+    public function getPassword(): ?string
     {
         return $this->password;
     }
 
-    public function setPassword(string $password): self
+    public function setPassword(?string $password): self
     {
         $this->password = $password;
 
@@ -212,6 +212,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return $this->plainPassword;
     }
+
     public function setPlainPassword(string $plainPassword): self
     {
         $this->plainPassword = $plainPassword;
