@@ -12,7 +12,7 @@ Please check the [projects](#projects) section for more details.
 
 ## Projects
 
-<details><summary>Sample application using API Platform V2 Security</summary>  
+<details><summary>Sample application using API Platform V2 Security :construction: </summary>  
 <p>  
 
 <img
