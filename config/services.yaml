@@ -28,3 +28,8 @@ services:
             $userPasswordEncoder: '@security.password_encoder'
             $persistProcessor: '@api_platform.doctrine.orm.state.persist_processor'
         tags: [ 'api_platform.state_processor' ]
+
+    'App\Serializer\UserContextBuilder':
+        decorates: 'api_platform.serializer.context_builder'
+        arguments: [ '@App\Serializer\UserContextBuilder.inner' ]
+        autoconfigure: false
