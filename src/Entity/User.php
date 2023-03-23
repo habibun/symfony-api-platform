@@ -25,6 +25,7 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
+    shortName: 'user',
     operations: [
         new Get(security: 'is_granted("ROLE_USER")'),
         new Put(security: 'is_granted("ROLE_USER") and object==user'),
@@ -39,7 +40,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         ),
     ],
     security: 'is_granted("ROLE_USER")',
-    processor: UserProcessor::class
+    processor: UserProcessor::class,
 )]
 #[UniqueEntity("email")]
 #[UniqueEntity("username")]
