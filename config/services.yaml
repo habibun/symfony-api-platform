@@ -33,3 +33,7 @@ services:
         decorates: 'api_platform.serializer.context_builder'
         arguments: [ '@App\Serializer\UserContextBuilder.inner' ]
         autoconfigure: false
+
+    App\ApiPlatform\AutoGroupResourceMetadataFactory:
+        decorates: 'api_platform.metadata.resource.metadata_factory'
+        arguments: ['@App\ApiPlatform\AutoGroupResourceMetadataFactory.inner']
