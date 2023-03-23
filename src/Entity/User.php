@@ -38,8 +38,6 @@ use Symfony\Component\Validator\Constraints as Assert;
             ]
         ),
     ],
-    normalizationContext: ['groups' => ['user:read']],
-    denormalizationContext: ['groups' => ['user:write']],
     security: 'is_granted("ROLE_USER")',
     processor: UserProcessor::class
 )]
