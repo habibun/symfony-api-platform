@@ -84,7 +84,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private Collection $products;
 
     #[ORM\Column(length: 50, nullable: true)]
-    #[Groups(['admin:read', 'user:write'])]
+    #[Groups(['admin:read', 'owner:read', 'user:write'])]
     private ?string $phoneNumber = null;
 
     public function __construct()
