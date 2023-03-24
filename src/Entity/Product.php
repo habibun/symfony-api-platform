@@ -21,6 +21,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
+use App\Validator as AppAssert;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
 #[ApiResource(
@@ -84,6 +85,7 @@ class Product
     #[ORM\JoinColumn(name: 'manufacturer_id', referencedColumnName: 'id', nullable: false)]
     #[Groups(['product:read', 'product:collection:write'])]
     #[Assert\Valid]
+    #[AppAssert\isValidManufacturer()]
     private ?User $manufacturer = null;
 
     public function __construct()
