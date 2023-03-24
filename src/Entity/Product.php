@@ -47,6 +47,7 @@ use App\Validator as AppAssert;
 ])]
 #[ApiFilter(RangeFilter::class, properties: ['price'])]
 #[ApiFilter(PropertyFilter::class)]
+#[ORM\EntityListeners(['App\EntityListener\ProductEntityListener'])]
 class Product
 {
     #[ORM\Id]
@@ -86,7 +87,6 @@ class Product
     #[Groups(['product:read', 'product:collection:write'])]
     #[Assert\Valid]
     #[AppAssert\isValidManufacturer()]
-    #[Assert\NotBlank]
     private ?User $manufacturer = null;
 
     public function __construct()

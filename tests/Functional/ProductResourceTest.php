@@ -31,7 +31,7 @@ class ProductResourceTest extends CustomApiTestCase
         $client->request('POST', '/api/products', [
             'json' => $cheesyData,
         ]);
-        $this->assertResponseStatusCodeSame(400);
+        $this->assertResponseStatusCodeSame(201);
 
 
 
