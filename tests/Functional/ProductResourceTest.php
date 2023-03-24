@@ -107,4 +107,22 @@ class ProductResourceTest extends CustomApiTestCase
         $client->request('GET', '/api/cheeses');
         $this->assertJsonContains(['hydra:totalItems' => 2]);
     }
+
+    public function testGetCheeseListingItem()
+    {
+        $client = self::createClient();
+        $user = $this->createUser('cheeseplese@example.com', 'foo');
+        $cheeseListing1 = new Product('cheese1');
+        $cheeseListing1->setManufacturer($user);
+        $cheeseListing1->setPrice(1000);
+        $cheeseListing1->setDescription('cheese');
+        $cheeseListing1->setIsActive(false);
+
+        $em = $this->getEntityManager();
+        $em->persist($cheeseListing1);
+        $em->flush();
+
+        $client->request('GET', '/api/cheeses/'.$cheeseListing1->getId());
+        $this->assertResponseStatusCodeSame(404);
+    }
 }
