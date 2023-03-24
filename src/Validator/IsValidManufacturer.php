@@ -17,4 +17,5 @@ class IsValidManufacturer extends Constraint
      * Then, use these in your validator class.
      */
     public $message = 'Cannot set owner to a different user';
+    public $anonymousMessage = 'Cannot set owner unless you are authenticated';
 }

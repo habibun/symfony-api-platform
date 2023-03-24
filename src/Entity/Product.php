@@ -86,6 +86,7 @@ class Product
     #[Groups(['product:read', 'product:collection:write'])]
     #[Assert\Valid]
     #[AppAssert\isValidManufacturer()]
+    #[Assert\NotBlank]
     private ?User $manufacturer = null;
 
     public function __construct()
