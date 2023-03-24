@@ -82,7 +82,7 @@ class Product
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'products')]
     #[ORM\JoinColumn(name: 'manufacturer_id', referencedColumnName: 'id', nullable: false)]
-    #[Groups(['product:read', 'product:write'])]
+    #[Groups(['product:read', 'product:collection:write'])]
     #[Assert\Valid]
     private ?User $manufacturer = null;
 

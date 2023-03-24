@@ -18,7 +18,32 @@ class ProductResourceTest extends CustomApiTestCase
 
         $this->assertResponseStatusCodeSame(401);
 
-        $this->createUserAndLogIn($client, 'user1@localhost.com', 'user1');
+        $authenticatedUser = $this->createUserAndLogIn($client, 'cheeseplease@example.com', 'foo');
+        $otherUser = $this->createUser('otheruser@example.com', 'foo');
+
+
+        $client->request('POST', '/api/products', [
+            'json' => []
+        ]);
+        $this->assertResponseStatusCodeSame(400);
+
+        $cheesyData = [
+            'title' => 'Mystery cheese... kinda green',
+            'description' => 'What mysteries does it hold?',
+            'price' => 5000
+        ];
+
+        $client->request('POST', '/api/cheeses', [
+            'json' => $cheesyData + ['owner' => '/api/users/'.$otherUser->getId()],
+        ]);
+
+        $this->assertResponseStatusCodeSame(400, 'not passing the correct owner');
+
+        $client->request('POST', '/api/cheeses', [
+            'json' => $cheesyData + ['owner' => '/api/users/'.$authenticatedUser->getId()],
+        ]);
+        $this->assertResponseStatusCodeSame(201);
+
     }
 
     public function testUpdateProduct()
