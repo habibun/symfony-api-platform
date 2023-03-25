@@ -16,20 +16,20 @@ class UserResourceTest extends CustomApiTestCase
 
         $client->request('POST', '/api/users', [
             'json' => [
-                'email' => 'cheeseplease@example.com',
-                'username' => 'cheeseplease',
+                'email' => 'productplease@example.com',
+                'username' => 'productplease',
                 'password' => 'brie'
             ]
         ]);
 
         $this->assertResponseStatusCodeSame(201);
-        $this->logIn($client, 'cheeseplease@example.com', 'brie');
+        $this->logIn($client, 'productplease@example.com', 'brie');
     }
 
     public function testUpdateUser()
     {
         $client = self::createClient();
-        $user = $this->createUserAndLogIn($client, 'cheeseplease@example.com', 'foo');
+        $user = $this->createUserAndLogIn($client, 'productplease@example.com', 'foo');
 
         $client->request('PUT', '/api/users/'.$user->getId(), [
             'json' => [
@@ -52,7 +52,7 @@ class UserResourceTest extends CustomApiTestCase
     public function testGetUser()
     {
         $client = self::createClient();
-        $user = $this->createUser('cheeseplease@example.com', 'foo');
+        $user = $this->createUser('productplease@example.com', 'foo');
         $this->createUserAndLogIn($client, 'authenticated@example.com', 'foo');
 
         $user->setPhoneNumber('555.123.4567');
@@ -61,7 +61,7 @@ class UserResourceTest extends CustomApiTestCase
 
         $client->request('GET', '/api/users/'.$user->getId());
         $this->assertJsonContains([
-            'username' => 'cheeseplease'
+            'username' => 'productplease'
         ]);
         $data = $client->getResponse()->toArray();
         $this->assertArrayNotHasKey('phoneNumber', $data);
@@ -71,7 +71,7 @@ class UserResourceTest extends CustomApiTestCase
         $user->setRoles(['ROLE_ADMIN']);
         $em->flush();
 
-        $this->logIn($client, 'cheeseplease@example.com', 'foo');
+        $this->logIn($client, 'productplease@example.com', 'foo');
         $client->request('GET', '/api/users/'.$user->getId());
         $this->assertJsonContains([
             'phoneNumber' => '555.123.4567'

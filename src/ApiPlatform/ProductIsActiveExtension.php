@@ -57,8 +57,8 @@ class ProductIsActiveExtension implements QueryCollectionExtensionInterface, Que
             return;
         }
         $rootAlias = $queryBuilder->getRootAliases()[0];
-        $queryBuilder->andWhere(sprintf('%s.isPublished = :isPublished', $rootAlias))
-            ->setParameter('isPublished', true);
+        $queryBuilder->andWhere(sprintf('%s.isActive = :isActive', $rootAlias))
+            ->setParameter('isActive', true);
     }
 
 }

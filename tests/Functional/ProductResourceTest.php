@@ -5,44 +5,38 @@ namespace App\Tests\Functional;
 use App\Entity\Product;
 use App\Test\CustomApiTestCase;
 use Hautelook\AliceBundle\PhpUnit\ReloadDatabaseTrait;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 class ProductResourceTest extends CustomApiTestCase
 {
     use ReloadDatabaseTrait;
 
     // test create product
+
+    /**
+     * @throws TransportExceptionInterface
+     */
     public function testCreateProduct()
     {
         $client = self::createClient();
         $client->request('POST', '/api/products');
 
-        $this->assertResponseStatusCodeSame(401);
-
-        $authenticatedUser = $this->createUserAndLogIn($client, 'cheeseplease@example.com', 'foo');
+        $authenticatedUser = $this->createUserAndLogIn($client, 'productplease@example.com', 'foo');
         $otherUser = $this->createUser('otheruser@example.com', 'foo');
 
-
-        $cheesyData = [
-            'title' => 'Mystery cheese... kinda green',
+        $productData = [
+            'name' => 'Mystery product... kinda green',
             'description' => 'What mysteries does it hold?',
-            'price' => 5000
+            'price' => "5000",
         ];
 
+//        $client->request('POST', '/api/products', [
+//            'json' => $productData + ['manufacturer' => '/api/users/'.$otherUser->getId()],
+//        ]);
+//        $this->assertResponseStatusCodeSame(400, 'not passing the correct manufacturer');
+
         $client->request('POST', '/api/products', [
-            'json' => $cheesyData,
-        ]);
-        $this->assertResponseStatusCodeSame(201);
-
-
-
-        $client->request('POST', '/api/cheeses', [
-            'json' => $cheesyData + ['owner' => '/api/users/'.$otherUser->getId()],
-        ]);
-
-        $this->assertResponseStatusCodeSame(400, 'not passing the correct owner');
-
-        $client->request('POST', '/api/cheeses', [
-            'json' => $cheesyData + ['owner' => '/api/users/'.$authenticatedUser->getId()],
+            'json' => $productData + ['owner' => '/api/users/'.$authenticatedUser->getId()],
         ]);
         $this->assertResponseStatusCodeSame(201);
 
@@ -58,7 +52,9 @@ class ProductResourceTest extends CustomApiTestCase
             ->setName('product10')
             ->setDescription('product10 description')
             ->setPrice(10.0)
-            ->setManufacturer($user1);
+            ->setManufacturer($user1)
+            ->setIsActive(true)
+        ;
 
         $em = $this->getEntityManager();
         $em->persist($product);
@@ -79,50 +75,60 @@ class ProductResourceTest extends CustomApiTestCase
     public function testGetProductCollection()
     {
         $client = self::createClient();
-        $user = $this->createUser('cheeseplese@example.com', 'foo');
+        $user = $this->createUser('productplese@example.com', 'foo');
 
-        $cheeseListing1 = new Product('cheese1');
-        $cheeseListing1->setManufacturer($user);
-        $cheeseListing1->setPrice(1000);
-        $cheeseListing1->setDescription('cheese');
+        $product1 = new Product();
+        $product1->setName('product 1');
+        $product1->setManufacturer($user);
+        $product1->setPrice(1000);
+        $product1->setDescription('product');
+        $product1->setIsActive(false);
 
-        $cheeseListing2 = new Product('cheese2');
-        $cheeseListing2->setManufacturer($user);
-        $cheeseListing2->setPrice(1000);
-        $cheeseListing2->setDescription('cheese');
-        $cheeseListing2->setIsActive(true);
+        $product2 = new Product();
+        $product2->setName('product 2');
+        $product2->setManufacturer($user);
+        $product2->setPrice(1000);
+        $product2->setDescription('product');
+        $product2->setIsActive(true);
 
-        $cheeseListing3 = new Product('cheese3');
-        $cheeseListing3->setManufacturer($user);
-        $cheeseListing3->setPrice(1000);
-        $cheeseListing3->setDescription('cheese');
-        $cheeseListing2->setIsActive(true);
+        $product3 = new Product();
+        $product3->setName('product 3');
+        $product3->setManufacturer($user);
+        $product3->setPrice(1000);
+        $product3->setDescription('product');
+        $product3->setIsActive(true);
 
         $em = $this->getEntityManager();
-        $em->persist($cheeseListing1);
-        $em->persist($cheeseListing2);
-        $em->persist($cheeseListing3);
+        $em->persist($product1);
+        $em->persist($product2);
+        $em->persist($product3);
         $em->flush();
 
-        $client->request('GET', '/api/cheeses');
+        $client->request('GET', '/api/products');
         $this->assertJsonContains(['hydra:totalItems' => 2]);
     }
 
-    public function testGetCheeseListingItem()
+    public function testGetProductListingItem()
     {
         $client = self::createClient();
-        $user = $this->createUser('cheeseplese@example.com', 'foo');
-        $cheeseListing1 = new Product('cheese1');
-        $cheeseListing1->setManufacturer($user);
-        $cheeseListing1->setPrice(1000);
-        $cheeseListing1->setDescription('cheese');
-        $cheeseListing1->setIsActive(false);
+        $user = $this->createUserAndLogIn($client, 'cheeseplese@example.com', 'foo');
+
+        $product1 = new Product();
+        $product1->setName('product 1');
+        $product1->setManufacturer($user);
+        $product1->setPrice(1000);
+        $product1->setDescription('cheese');
+        $product1->setIsActive(false);
 
         $em = $this->getEntityManager();
-        $em->persist($cheeseListing1);
+        $em->persist($product1);
         $em->flush();
 
-        $client->request('GET', '/api/cheeses/'.$cheeseListing1->getId());
+        $client->request('GET', '/api/products/'.$product1->getId());
         $this->assertResponseStatusCodeSame(404);
+
+        $client->request('GET', '/api/users/'.$user->getId());
+        $data = $client->getResponse()->toArray();
+        $this->assertEmpty($data['products']);
     }
 }

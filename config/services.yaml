@@ -40,4 +40,4 @@ services:
         decoration_priority: -20
 
     App\Doctrine\ProductSetManufacturerListener:
-        tags: [doctrine.orm.entity_listener]
+        tags: ['doctrine.orm.entity_listener']

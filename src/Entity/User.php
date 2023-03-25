@@ -198,6 +198,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->products;
     }
 
+    #[Groups(['user:read'])]
+    #[SerializedName('products')]
+    public function getActiveProducts(): Collection
+    {
+        return $this->products->filter(function(Product $product) {
+            return $product->isIsActive();
+        });
+    }
+
     public function addProduct(Product $product): self
     {
         if (!$this->products->contains($product)) {

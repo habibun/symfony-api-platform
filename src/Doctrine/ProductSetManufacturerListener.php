@@ -16,9 +16,11 @@ class ProductSetManufacturerListener
     public function prePersist(Product $product)
     {
         if ($product->getManufacturer()) {
-            if ($this->security->getUser()) {
-                $product->setManufacturer($this->security->getUser());
-            }
+            return;
+        }
+
+        if ($this->security->getUser()) {
+            $product->setManufacturer($this->security->getUser());
         }
 
     }

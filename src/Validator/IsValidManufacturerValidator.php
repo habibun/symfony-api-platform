@@ -6,7 +6,6 @@ use App\Entity\User;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
-use App\Validator\IsValidManufacturer;
 
 class IsValidManufacturerValidator extends ConstraintValidator
 {
@@ -18,7 +17,7 @@ class IsValidManufacturerValidator extends ConstraintValidator
 
     public function validate($value, Constraint $constraint)
     {
-        /* @var IsValidManufacturer $constraint */
+        /* @var $constraint \App\Validator\IsValidManufacturer */
         if (null === $value || '' === $value) {
             return;
         }
@@ -27,6 +26,12 @@ class IsValidManufacturerValidator extends ConstraintValidator
         if (!$user instanceof User) {
             $this->context->buildViolation($constraint->anonymousMessage)
                 ->addViolation();
+
+            return;
+        }
+
+        // allow admin users to change owners
+        if ($this->security->isGranted('ROLE_ADMIN')) {
             return;
         }
 
@@ -34,9 +39,6 @@ class IsValidManufacturerValidator extends ConstraintValidator
             throw new \InvalidArgumentException('@IsValidOwner constraint must be put on a property containing a User object');
         }
 
-        if ($this->security->isGranted('ROLE_ADMIN')) {
-            return;
-        }
 
         if ($value->getId() !== $user->getId()) {
             $this->context->buildViolation($constraint->message)

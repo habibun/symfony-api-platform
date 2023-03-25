@@ -15,13 +15,13 @@ use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use ApiPlatform\Serializer\Filter\PropertyFilter;
 use App\Repository\ProductRepository;
+use App\Validator as AppValidator;
 use Carbon\Carbon;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
-use App\Validator as AppAssert;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
 #[ApiResource(
@@ -47,7 +47,7 @@ use App\Validator as AppAssert;
 ])]
 #[ApiFilter(RangeFilter::class, properties: ['price'])]
 #[ApiFilter(PropertyFilter::class)]
-#[ORM\EntityListeners(['App\EntityListener\ProductEntityListener'])]
+#[ORM\EntityListeners(['App\Doctrine\ProductSetManufacturerListener'])]
 class Product
 {
     #[ORM\Id]
@@ -84,9 +84,8 @@ class Product
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'products')]
     #[ORM\JoinColumn(name: 'manufacturer_id', referencedColumnName: 'id', nullable: false)]
-    #[Groups(['product:read', 'product:collection:write'])]
-    #[Assert\Valid]
-    #[AppAssert\isValidManufacturer()]
+    #[Groups(['product:read', 'product:collection:post'])]
+    #[AppValidator\isValidManufacturer()]
     private ?User $manufacturer = null;
 
     public function __construct()
