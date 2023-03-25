@@ -24,7 +24,7 @@ width="50%"
 
 **Code:** https://github.com/habibun/symfony-api-platform/tree/v2-extending  
 **Resources:**
-- [API Platform Part 2: Security](https://symfonycasts.com/screencast/api-platform2-extending)
+- [API Platform Part 3: Custom Resources](https://symfonycasts.com/screencast/api-platform-extending)
 <br/>
 
 
@@ -65,9 +65,7 @@ symfony composer install
 </p>
 </details>
 
-<details><summary>Sample application using API Platform V2</summary>  
-<p>  
-<details><summary>Sample application using API Platform V2 Security :construction: </summary>  
+<details><summary>Sample application using API Platform V2</summary>
 <p>  
 
 <img
@@ -80,32 +78,6 @@ width="50%"
 **Resources:**
 - [API Platform Part 2: Security](https://symfonycasts.com/screencast/api-platform2-security)
 <br/>
-
-
-#### Installation
-```bash
-git clone git@github.com:habibun/symfony-api-platform.git
-cd symfony-api-platform
-git checkout v2
-symfony composer install
-```
-
-</p>
-</details>
-
-<details><summary>Sample application using API Platform V2</summary>  
-<p>  
-
-<img
-src="https://user-images.githubusercontent.com/5810350/222693930-e6653b71-1797-4bf8-97e9-9e7a35bbc356.png"
-alt="Symfony API Platform Project"
-width="50%"
-/>
-
-**Code:** https://github.com/habibun/symfony-api-platform/tree/v2  
-**Resources:**
-- [API Platform 2: Serious RESTful APIs](https://symfonycasts.com/screencast/api-platform2)
-  <br/>
 
 
 #### Installation
