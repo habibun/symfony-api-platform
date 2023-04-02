@@ -19,3 +19,6 @@ symfony console doctrine:schema:create --env=test
 
 # find autowiring
 symfony console debug:autowiring pass
+
+# find more info about service
+php bin/console debug:container debug.api_platform.data_persister
