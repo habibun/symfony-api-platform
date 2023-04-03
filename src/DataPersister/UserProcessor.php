@@ -1,7 +1,6 @@
 <?php
 namespace App\DataPersister;
 
-use ApiPlatform\Metadata\DeleteOperationInterface;
 use ApiPlatform\State\ProcessorInterface;
 use ApiPlatform\Metadata\Operation;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
