@@ -10,24 +10,21 @@ use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
-class UserProcessor implements DataPersisterInterface
+class UserProcessor implements ProcessorInterface
 {
     private UserPasswordEncoderInterface $userPasswordEncoder;
     private ProcessorInterface $persistProcessor;
     private LoggerInterface $logger;
-    private EntityManagerInterface $entityManager;
 
     public function __construct(
         UserPasswordEncoderInterface $userPasswordEncoder,
         ProcessorInterface $persistProcessor,
-        LoggerInterface $logger,
-        EntityManagerInterface $entityManager,
+        LoggerInterface $logger
     )
     {
         $this->userPasswordEncoder = $userPasswordEncoder;
         $this->persistProcessor = $persistProcessor;
         $this->logger = $logger;
-        $this->entityManager = $entityManager;
     }
 
     /**
@@ -39,35 +36,6 @@ class UserProcessor implements DataPersisterInterface
      * @return mixed
      */
     public function process($data, Operation $operation, array $uriVariables = [], array $context = [])
-    {
-        if ($data->getPlainPassword()) {
-            $data->setPassword(
-                $this->userPasswordEncoder->encodePassword($data, $data->getPlainPassword())
-            );
-            $data->eraseCredentials();
-        }
-
-        return $this->persistProcessor->process($data, $operation, $uriVariables, $context);
-    }
-
-    /**
-     * @param $data
-     * @param array $context
-     *
-     * @return bool
-     */
-    public function supports($data, array $context = []): bool
-    {
-        return $data instanceof User;
-    }
-
-    /**
-     * @param $data
-     * @param array $context
-     *
-     * @return object|void
-     */
-    public function persist($data, array $context = [])
     {
         if (!$data->getId()) {
             // take any actions needed for a new user
@@ -87,19 +55,6 @@ class UserProcessor implements DataPersisterInterface
             $data->eraseCredentials();
         }
 
-        $this->entityManager->persist($data);
-        $this->entityManager->flush();
-    }
-
-    /**
-     * @param $data
-     * @param array $context
-     *
-     * @return mixed
-     */
-    public function remove($data, array $context = [])
-    {
-        $this->entityManager->remove($data);
-        $this->entityManager->flush();
+        return $this->persistProcessor->process($data, $operation, $uriVariables, $context);
     }
 }

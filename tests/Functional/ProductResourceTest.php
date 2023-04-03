@@ -3,7 +3,9 @@
 namespace App\Tests\Functional;
 
 use App\Entity\Product;
+use App\Entity\ProductNotification;
 use App\Factory\ProductFactory;
+use App\Factory\ProductNotificationFactory;
 use App\Factory\UserFactory;
 use App\Test\CustomApiTestCase;
 use Hautelook\AliceBundle\PhpUnit\ReloadDatabaseTrait;
@@ -152,6 +154,15 @@ class ProductResourceTest extends CustomApiTestCase
         $product->save();
 
         $this->assertTrue($product->isIsActive());
+        ProductNotificationFactory::repository()->assertCount(1, 'There should be one notification about being published');
+
+        $product->save();
+        // publishing again should not create a second notification
+        $client->request('PUT', '/api/products/'.$product->getId(), [
+            'json' => ['isPublished' => true]
+        ]);
+        $product->save();
+        ProductNotificationFactory::repository()->assertCount(1);
 
     }
 }
