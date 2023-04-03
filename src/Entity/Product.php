@@ -79,6 +79,7 @@ class Product
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
+    #[Groups('product:write')]
     #[ORM\Column]
     private bool $isActive = true;
 

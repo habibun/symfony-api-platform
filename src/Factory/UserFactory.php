@@ -29,6 +29,8 @@ use Zenstruck\Foundry\RepositoryProxy;
  */
 final class UserFactory extends ModelFactory
 {
+    const DEFAULT_PASSWORD = 'test';
+
     /**
      * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#factories-as-services
      *
@@ -48,7 +50,7 @@ final class UserFactory extends ModelFactory
     {
         return [
             'email' => self::faker()->text(180),
-            'password' => self::faker()->text(),
+            'password' => '$argon2id$v=19$m=10,t=3,p=1$eyXPWiQFWUO901E78Bb3UQ$hyu9dFDz7fo2opQyCSoX/NfJDvEpzER/a+WbiAagqqw',
             'roles' => [],
             'username' => self::faker()->text(255),
         ];

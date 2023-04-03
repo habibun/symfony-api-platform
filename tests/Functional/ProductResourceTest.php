@@ -3,6 +3,8 @@
 namespace App\Tests\Functional;
 
 use App\Entity\Product;
+use App\Factory\ProductFactory;
+use App\Factory\UserFactory;
 use App\Test\CustomApiTestCase;
 use Hautelook\AliceBundle\PhpUnit\ReloadDatabaseTrait;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
@@ -130,5 +132,26 @@ class ProductResourceTest extends CustomApiTestCase
         $client->request('GET', '/api/users/'.$user->getId());
         $data = $client->getResponse()->toArray();
         $this->assertEmpty($data['products']);
+    }
+
+    public function testActiveProduct()
+    {
+        $client = self::createClient();
+        $user = UserFactory::new()->create();
+        $product = ProductFactory::new()->create([
+            'manufacturer' => $user,
+        ]);
+        $this->logIn($client, $user);
+        $client->request('PUT', '/api/products/'.$product->getId(), [
+            'json' => ['isActive' => true]
+        ]);
+
+        $this->assertResponseStatusCodeSame(200);
+
+        $product->refresh();
+        $product->save();
+
+        $this->assertTrue($product->isIsActive());
+
     }
 }
