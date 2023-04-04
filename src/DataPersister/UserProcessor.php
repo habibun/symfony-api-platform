@@ -9,22 +9,26 @@ use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Core\Security;
 
 class UserProcessor implements ProcessorInterface
 {
     private UserPasswordEncoderInterface $userPasswordEncoder;
     private ProcessorInterface $persistProcessor;
     private LoggerInterface $logger;
+    private Security $security;
 
     public function __construct(
         UserPasswordEncoderInterface $userPasswordEncoder,
         ProcessorInterface $persistProcessor,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        Security $security
     )
     {
         $this->userPasswordEncoder = $userPasswordEncoder;
         $this->persistProcessor = $persistProcessor;
         $this->logger = $logger;
+        $this->security = $security;
     }
 
     /**
@@ -54,6 +58,8 @@ class UserProcessor implements ProcessorInterface
             );
             $data->eraseCredentials();
         }
+
+        $data->setIsMe($this->security->getUser() === $data);
 
         return $this->persistProcessor->process($data, $operation, $uriVariables, $context);
     }

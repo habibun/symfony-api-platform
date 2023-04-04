@@ -36,8 +36,8 @@ class ProductProcessor implements ProcessorInterface
     public function process($data, Operation $operation, array $uriVariables = [], array $context = [])
     {
         $originalData = $this->entityManager->getUnitOfWork()->getOriginalEntityData($data);
-        $wasAlreadyPublished = ($originalData['isPublished'] ?? false);
-        if ($data->getIsPublished() &&  !$wasAlreadyPublished) {
+        $wasAlreadyPublished = ($originalData['isActive'] ?? false);
+        if ($data->getIsActive() &&  !$wasAlreadyPublished) {
             $notification = new ProductNotification($data, 'Product listing was created!');
             $this->entityManager->persist($notification);
             $this->entityManager->flush();
