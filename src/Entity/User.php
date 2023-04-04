@@ -89,6 +89,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['admin:read', 'owner:read', 'user:write'])]
     private ?string $phoneNumber = null;
 
+    /**
+     * Returns true if this is the currently-authenticated user
+     */
+    #[Groups('user:read')]
+    private $isMe;
+
     public function __construct()
     {
         $this->products = new ArrayCollection();
@@ -250,6 +256,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->phoneNumber = $phoneNumber;
 
         return $this;
+    }
+
+    public function getIsMe(): bool
+    {
+        if ($this->isMe === null) {
+            throw new \LogicException('The isMe field has not been initialized');
+        }
+        return $this->isMe;
+    }
+
+    public function setIsMe(bool $isMe)
+    {
+        $this->isMe = $isMe;
     }
 }
 

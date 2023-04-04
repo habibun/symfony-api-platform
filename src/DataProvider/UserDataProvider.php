@@ -7,13 +7,17 @@ use ApiPlatform\Core\DataProvider\ContextAwareCollectionDataProviderInterface;
 use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
 use App\Entity\User;
 use App\Repository\UserRepository;
+use Symfony\Component\Security\Core\Security;
 
 class UserDataProvider implements ContextAwareCollectionDataProviderInterface, RestrictedDataProviderInterface
 {
     private $collectionDataProvider;
-    public function __construct(CollectionDataProviderInterface $collectionDataProvider)
+    private Security $security;
+
+    public function __construct(CollectionDataProviderInterface $collectionDataProvider, Security $security)
     {
         $this->collectionDataProvider = $collectionDataProvider;
+        $this->security = $security;
     }
 
     /**
@@ -25,7 +29,13 @@ class UserDataProvider implements ContextAwareCollectionDataProviderInterface, R
      */
     public function getCollection(string $resourceClass, string $operationName = null, array $context = [])
     {
-        return $this->collectionDataProvider->getCollection($resourceClass, $operationName, $context);
+        /** @var User[] $users */
+        $users = $this->collectionDataProvider->getCollection($resourceClass, $operationName, $context);
+        $currentUser = $this->security->getUser();
+        foreach ($users as $user) {
+            $user->setIsMe($currentUser === $user);
+        }
+        return $users;
     }
 
     /**
