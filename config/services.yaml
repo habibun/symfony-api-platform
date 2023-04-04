@@ -47,3 +47,7 @@ services:
 
     App\Doctrine\ProductSetManufacturerListener:
         tags: ['doctrine.orm.entity_listener']
+
+    App\DataProvider\UserDataProvider:
+        bind:
+            $collectionDataProvider: '@api_platform.doctrine.orm.default.collection_data_provider'
