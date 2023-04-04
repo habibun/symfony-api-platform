@@ -203,7 +203,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getActiveProducts(): Collection
     {
         return $this->products->filter(function(Product $product) {
-            return $product->isIsActive();
+            return $product->getIsActive();
         });
     }
 

@@ -8,9 +8,9 @@ use Symfony\Component\Validator\Constraint;
 /**
  * @Annotation
  *
- * @Target({"PROPERTY", "METHOD", "ANNOTATION"})
+ * @Target({"CLASS"})
  */
-#[\Attribute(\Attribute::TARGET_PROPERTY | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
+#[\Attribute]
 class ValidIsActive extends Constraint
 {
     /*
@@ -19,7 +19,7 @@ class ValidIsActive extends Constraint
      */
     public $message = 'The value "{{ value }}" is not valid.';
 
-    public function getTargets()
+    public function getTargets(): string
     {
         return self::CLASS_CONSTRAINT;
     }

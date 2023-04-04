@@ -53,12 +53,25 @@ class ProductIsActiveExtension implements QueryCollectionExtensionInterface, Que
         if ($resourceClass !== Product::class) {
             return;
         }
+
         if ($this->security->isGranted('ROLE_ADMIN')) {
             return;
         }
+
         $rootAlias = $queryBuilder->getRootAliases()[0];
-        $queryBuilder->andWhere(sprintf('%s.isActive = :isActive', $rootAlias))
-            ->setParameter('isActive', true);
+
+        if (!$this->security->getUser()) {
+            $queryBuilder->andWhere(sprintf('%s.isActive = :isActive', $rootAlias))
+                ->setParameter('isActive', true);
+        } else {
+            $queryBuilder->andWhere(sprintf('
+                    %s.isActive = :isActive
+                    OR %s.manufacturer = :manufacturer',
+                $rootAlias, $rootAlias
+            ))
+                ->setParameter('isActive', true)
+                ->setParameter('manufacturer', $this->security->getUser());
+        }
     }
 
 }

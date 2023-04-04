@@ -27,6 +27,7 @@ reset-db: ## reset database
 	symfony console doctrine:database:drop --force --if-exists
 	symfony console doctrine:database:create
 	symfony console doctrine:migrations:migrate -n
+	symfony console doctrine:fixtures:load -n
 
 .PHONY: start
 start: ## start

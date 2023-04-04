@@ -59,7 +59,6 @@ final class ProductFactory extends ModelFactory
     protected function getDefaults(): array
     {
         return [
-            'isActive' => self::faker()->boolean(),
             'manufacturer' => UserFactory::new(),
             'name' => self::faker()->text(50),
             'price' => self::faker()->randomFloat(),

@@ -40,7 +40,7 @@ class ProductResourceTest extends CustomApiTestCase
 //        $this->assertResponseStatusCodeSame(400, 'not passing the correct manufacturer');
 
         $client->request('POST', '/api/products', [
-            'json' => $productData + ['owner' => '/api/users/'.$authenticatedUser->getId()],
+            'json' => $productData + ['manufacturer' => '/api/users/'.$authenticatedUser->getId()],
         ]);
         $this->assertResponseStatusCodeSame(201);
 
@@ -153,7 +153,7 @@ class ProductResourceTest extends CustomApiTestCase
         $product->refresh();
         $product->save();
 
-        $this->assertTrue($product->isIsActive());
+        $this->assertTrue($product->getIsActive());
         ProductNotificationFactory::repository()->assertCount(1, 'There should be one notification about being published');
 
         $product->save();
@@ -165,46 +165,74 @@ class ProductResourceTest extends CustomApiTestCase
         ProductNotificationFactory::repository()->assertCount(1);
     }
 
-    public function testPublishProductValidation()
+    public function testActiveProductValidation()
     {
         $client = self::createClient();
-        $user = UserFactory::new()->create();
-        $adminUser = UserFactory::new()->create(['roles' => ['ROLE_ADMIN']]);
+        $user = UserFactory::new()
+            ->create()
+            ->disableAutoRefresh();
+
+        $adminUser = UserFactory::new()
+            ->create(['roles' => ['ROLE_ADMIN']])
+            ->disableAutoRefresh();
+
         $product = ProductFactory::new()
-            ->create(['owner' => $user, 'description' => 'short']);
-        // 1) the owner CANNOT publish with a short description
+            ->create(['manufacturer' => $user, 'description' => 'short'])
+            ->disableAutoRefresh();
+
+        // 1) the manufacturer CANNOT publish with a short description
         $this->logIn($client, $user);
         $client->request('PUT', '/api/products/'.$product->getId(), [
             'json' => ['isActive' => true]
         ]);
-        $this->assertResponseStatusCodeSame(400, 'description is too short');
+//        $product->save();
+
+//        dd($client->getResponse());
+        $this->assertResponseStatusCodeSame(422, 'description is too short');
+
         // 2) an admin user CAN publish with a short description
         $this->logIn($client, $adminUser);
         $client->request('PUT', '/api/products/'.$product->getId(), [
             'json' => ['isActive' => true]
         ]);
+//        $product->save();
+
         $this->assertResponseStatusCodeSame(200, 'admin CAN publish a short description');
+
+//        $product->save();
         $product->refresh();
+
         $this->assertTrue($product->getIsActive());
+
         // 3) a normal user CAN make other changes to their listing
         $this->logIn($client, $user);
         $client->request('PUT', '/api/products/'.$product->getId(), [
-            'json' => ['price' => 12345]
+            'json' => ['price' => '12345']
         ]);
+
+//        dd($client->getResponse()->getContent());
+
         $this->assertResponseStatusCodeSame(200, 'user can make other changes on short description');
+
+//        $product->save();
         $product->refresh();
-        $this->assertSame(12345, $product->getPrice());
+        $this->assertSame('12345', $product->getPrice());
+
         // 4) a normal user CANNOT unpublish
         $this->logIn($client, $user);
         $client->request('PUT', '/api/products/'.$product->getId(), [
             'json' => ['isActive' => false]
         ]);
-        $this->assertResponseStatusCodeSame(400, 'normal user cannot unpublish');
+
+        $this->assertResponseStatusCodeSame(422, 'normal user cannot unpublish');
+
         // 5) an admin user CAN unpublish
         $this->logIn($client, $adminUser);
         $client->request('PUT', '/api/products/'.$product->getId(), [
             'json' => ['isActive' => false]
         ]);
+//        $product->save();
+
         $this->assertResponseStatusCodeSame(200, 'admin can unpublish');
         $product->refresh();
         $this->assertFalse($product->getIsActive());

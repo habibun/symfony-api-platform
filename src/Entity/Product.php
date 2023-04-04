@@ -48,6 +48,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ApiFilter(RangeFilter::class, properties: ['price'])]
 #[ApiFilter(PropertyFilter::class)]
 #[ORM\EntityListeners(['App\Doctrine\ProductSetManufacturerListener'])]
+#[AppValidator\ValidIsActive()]
 class Product
 {
     #[ORM\Id]
@@ -81,7 +82,7 @@ class Product
 
     #[Groups('product:write')]
     #[ORM\Column]
-    private bool $isActive = true;
+    private bool $isActive = false;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'products')]
     #[ORM\JoinColumn(name: 'manufacturer_id', referencedColumnName: 'id', nullable: false)]
@@ -166,7 +167,7 @@ class Product
         return $this;
     }
 
-    public function isIsActive(): bool
+    public function getIsActive(): bool
     {
         return $this->isActive;
     }
