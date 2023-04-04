@@ -159,10 +159,54 @@ class ProductResourceTest extends CustomApiTestCase
         $product->save();
         // publishing again should not create a second notification
         $client->request('PUT', '/api/products/'.$product->getId(), [
-            'json' => ['isPublished' => true]
+            'json' => ['isActive' => true]
         ]);
         $product->save();
         ProductNotificationFactory::repository()->assertCount(1);
+    }
 
+    public function testPublishProductValidation()
+    {
+        $client = self::createClient();
+        $user = UserFactory::new()->create();
+        $adminUser = UserFactory::new()->create(['roles' => ['ROLE_ADMIN']]);
+        $product = ProductFactory::new()
+            ->create(['owner' => $user, 'description' => 'short']);
+        // 1) the owner CANNOT publish with a short description
+        $this->logIn($client, $user);
+        $client->request('PUT', '/api/products/'.$product->getId(), [
+            'json' => ['isActive' => true]
+        ]);
+        $this->assertResponseStatusCodeSame(400, 'description is too short');
+        // 2) an admin user CAN publish with a short description
+        $this->logIn($client, $adminUser);
+        $client->request('PUT', '/api/products/'.$product->getId(), [
+            'json' => ['isActive' => true]
+        ]);
+        $this->assertResponseStatusCodeSame(200, 'admin CAN publish a short description');
+        $product->refresh();
+        $this->assertTrue($product->getIsActive());
+        // 3) a normal user CAN make other changes to their listing
+        $this->logIn($client, $user);
+        $client->request('PUT', '/api/products/'.$product->getId(), [
+            'json' => ['price' => 12345]
+        ]);
+        $this->assertResponseStatusCodeSame(200, 'user can make other changes on short description');
+        $product->refresh();
+        $this->assertSame(12345, $product->getPrice());
+        // 4) a normal user CANNOT unpublish
+        $this->logIn($client, $user);
+        $client->request('PUT', '/api/products/'.$product->getId(), [
+            'json' => ['isActive' => false]
+        ]);
+        $this->assertResponseStatusCodeSame(400, 'normal user cannot unpublish');
+        // 5) an admin user CAN unpublish
+        $this->logIn($client, $adminUser);
+        $client->request('PUT', '/api/products/'.$product->getId(), [
+            'json' => ['isActive' => false]
+        ]);
+        $this->assertResponseStatusCodeSame(200, 'admin can unpublish');
+        $product->refresh();
+        $this->assertFalse($product->getIsActive());
     }
 }

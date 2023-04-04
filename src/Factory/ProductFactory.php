@@ -34,6 +34,13 @@ final class ProductFactory extends ModelFactory
         return $this->addState(['isActive' => true]);
     }
 
+    public function withLongDescription(): self
+    {
+        return $this->addState([
+            'description' => self::faker()->paragraphs(3, true)
+        ]);
+    }
+
     /**
      * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#factories-as-services
      *
@@ -56,6 +63,7 @@ final class ProductFactory extends ModelFactory
             'manufacturer' => UserFactory::new(),
             'name' => self::faker()->text(50),
             'price' => self::faker()->randomFloat(),
+            'description' => 'What can I say? A raw cube of cheese power'
         ];
     }
 
