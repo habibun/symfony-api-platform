@@ -17,6 +17,8 @@ class SetIsMeOnCurrentUserSubscriber implements EventSubscriberInterface
 
     public function onRequestEvent(RequestEvent $event)
     {
+//        dd($event->getRequest()->attributes->get('data'));
+
         if (!$event->isMasterRequest()) {
             return;
         }
