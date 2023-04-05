@@ -3,6 +3,7 @@
 namespace App\Tests\Functional;
 
 use App\Entity\User;
+use App\Factory\UserFactory;
 use App\Test\CustomApiTestCase;
 use Hautelook\AliceBundle\PhpUnit\ReloadDatabaseTrait;
 
@@ -52,30 +53,36 @@ class UserResourceTest extends CustomApiTestCase
     public function testGetUser()
     {
         $client = self::createClient();
-        $user = $this->createUser('productplease@example.com', 'foo');
-        $this->createUserAndLogIn($client, 'authenticated@example.com', 'foo');
+        $user = UserFactory::new()->create([
+            'phoneNumber' => '555.123.4567',
+            'username' => 'cheesehead',
+        ]);
+        $authenticatedUser = UserFactory::new()->create();
+        $this->logIn($client, $authenticatedUser);
 
-        $user->setPhoneNumber('555.123.4567');
-        $em = $this->getEntityManager();
-        $em->flush();
-
-        $client->request('GET', '/api/users/'.$user->getId());
+        $client->request('GET', '/api/users/'.$user->getUuid());
         $this->assertResponseStatusCodeSame(200);
         $this->assertJsonContains([
-            'username' => 'productplease'
+            'username' => $user->getUsername(),
+            'isMvp' => true,
         ]);
+
         $data = $client->getResponse()->toArray();
         $this->assertArrayNotHasKey('phoneNumber', $data);
+        $this->assertJsonContains([
+            'isMe' => false,
+        ]);
 
         // refresh the user & elevate
-        $user = $em->getRepository(User::class)->find($user->getId());
+        $user->refresh();
         $user->setRoles(['ROLE_ADMIN']);
-        $em->flush();
+        $user->save();
+        $this->logIn($client, $user);
 
-        $this->logIn($client, 'productplease@example.com', 'foo');
-        $client->request('GET', '/api/users/'.$user->getId());
+        $client->request('GET', '/api/users/'.$user->getUuid());
         $this->assertJsonContains([
-            'phoneNumber' => '555.123.4567'
+            'phoneNumber' => '555.123.4567',
+            'isMe' => true,
         ]);
 
     }

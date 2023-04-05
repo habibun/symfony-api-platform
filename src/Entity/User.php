@@ -13,6 +13,7 @@ use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use ApiPlatform\Serializer\Filter\PropertyFilter;
 use App\DataPersister\UserProcessor;
+use App\Doctrine\UserSetIsMvpListener;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -49,6 +50,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
 #[ApiFilter(PropertyFilter::class)]
+#[ORM\EntityListeners([UserSetIsMvpListener::class])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -94,6 +96,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[Groups('user:read')]
     private $isMe = false;
+
+    /**
+     * Returns true if this user is an MVP
+     *
+     * @Groups({"user:read"})
+     */
+    private $isMvp = false;
 
     public function __construct()
     {
@@ -266,6 +275,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setIsMe(bool $isMe)
     {
         $this->isMe = $isMe;
+    }
+
+    public function isMvp(): bool
+    {
+        return $this->isMvp;
+    }
+    public function setIsMvp(bool $isMvp)
+    {
+        $this->isMvp = $isMvp;
     }
 }
 

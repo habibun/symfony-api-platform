@@ -8,7 +8,6 @@ use ApiPlatform\Core\DataProvider\DenormalizedIdentifiersAwareItemDataProviderIn
 use ApiPlatform\Core\DataProvider\ItemDataProviderInterface;
 use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
 use App\Entity\User;
-use App\Repository\UserRepository;
 use Symfony\Component\Security\Core\Security;
 
 class UserDataProvider implements ContextAwareCollectionDataProviderInterface, DenormalizedIdentifiersAwareItemDataProviderInterface, RestrictedDataProviderInterface
