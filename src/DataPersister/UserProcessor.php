@@ -59,7 +59,8 @@ class UserProcessor implements ProcessorInterface
             $data->eraseCredentials();
         }
 
-        $data->setIsMe($this->security->getUser() === $data);
+        // now handled in a listener
+//        $data->setIsMe($this->security->getUser() === $data);
 
         return $this->persistProcessor->process($data, $operation, $uriVariables, $context);
     }
