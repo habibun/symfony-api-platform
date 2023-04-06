@@ -3,35 +3,31 @@
 namespace App\DataProvider;
 
 use ApiPlatform\Core\DataProvider\CollectionDataProviderInterface;
+use ApiPlatform\Core\DataProvider\ItemDataProviderInterface;
 use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
 use App\Entity\DailyStats;
 use App\Repository\ProductRepository;
+use App\Service\StatsHelper;
 
-class DailyStatsProvider implements CollectionDataProviderInterface, RestrictedDataProviderInterface
+class DailyStatsProvider implements CollectionDataProviderInterface, ItemDataProviderInterface, RestrictedDataProviderInterface
 {
-    private $productRepository;
-    public function __construct(ProductRepository $cheeseListingRepository)
+    private $statsHelper;
+    public function __construct(StatsHelper $statsHelper)
     {
-        $this->productRepository = $cheeseListingRepository;
+        $this->statsHelper = $statsHelper;
     }
 
     public function getCollection(string $resourceClass, string $operationName = null)
     {
-        $listings = $this->productRepository
-            ->findBy([], [], 5);
+        return $this->statsHelper->fetchMany();
 
-        $stats = new DailyStats(
-            new \DateTime(),
-            1000,
-            $listings
-        );
-        $stats2 = new DailyStats(
-            new \DateTime('-1 day'),
-            2000,
-            $listings
-        );
-        return [$stats, $stats2];
     }
+
+    public function getItem(string $resourceClass, $id, string $operationName = null, array $context = [])
+    {
+        return $this->statsHelper->fetchOne($id);
+    }
+
     public function supports(string $resourceClass, string $operationName = null, array $context = []): bool
     {
         return $resourceClass === DailyStats::class;

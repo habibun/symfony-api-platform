@@ -11,7 +11,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ApiResource(
     operations: [
-        new Get(controller: NotFoundAction::class, output: false, read: false),
+        new Get(),
         new GetCollection(),
     ],
     normalizationContext: ['groups' => ['daily-stats:read'], 'swagger_definition_name' => 'Read'],
