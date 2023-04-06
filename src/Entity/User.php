@@ -82,7 +82,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $username = null;
 
     #[ORM\OneToMany(mappedBy: 'manufacturer', targetEntity: Product::class, cascade: ['persist'], orphanRemoval: true)]
-    #[Groups(['user:read', 'user:write'])]
+    #[Groups(['user:write'])]
     #[Assert\Valid]
     #[ApiSubresource]
     private Collection $products;
@@ -213,6 +213,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->products;
     }
 
+    /**
+     * @return Collection<Product>
+     */
     #[Groups(['user:read'])]
     #[SerializedName('products')]
     public function getActiveProducts(): Collection
