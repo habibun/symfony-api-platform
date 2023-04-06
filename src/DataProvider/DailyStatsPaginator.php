@@ -13,9 +13,14 @@ use Traversable;
 class DailyStatsPaginator implements PaginatorInterface, \IteratorAggregate
 {
     private $statsHelper;
-    public function __construct(StatsHelper $statsHelper)
+    private int $currentPage;
+    private int $maxResults;
+
+    public function __construct(StatsHelper $statsHelper, int $currentPage, int $maxResults)
     {
         $this->statsHelper = $statsHelper;
+        $this->currentPage = $currentPage;
+        $this->maxResults = $maxResults;
     }
 
     private $dailyStatsIterator;
@@ -33,7 +38,7 @@ class DailyStatsPaginator implements PaginatorInterface, \IteratorAggregate
      */
     public function getLastPage(): float
     {
-        return 2;
+        return ceil($this->getTotalItems() / $this->getItemsPerPage()) ?: 1.;
     }
 
     /**
@@ -41,7 +46,7 @@ class DailyStatsPaginator implements PaginatorInterface, \IteratorAggregate
      */
     public function getTotalItems(): float
     {
-        return 25;
+        return $this->statsHelper->count();
     }
 
     /**
@@ -49,7 +54,7 @@ class DailyStatsPaginator implements PaginatorInterface, \IteratorAggregate
      */
     public function getCurrentPage(): float
     {
-        return 1;
+        return $this->currentPage;
     }
 
     /**
@@ -57,7 +62,7 @@ class DailyStatsPaginator implements PaginatorInterface, \IteratorAggregate
      */
     public function getItemsPerPage(): float
     {
-        return 10;
+        return $this->maxResults;
     }
 
     /**
@@ -66,8 +71,12 @@ class DailyStatsPaginator implements PaginatorInterface, \IteratorAggregate
     public function getIterator(): Traversable
     {
         if ($this->dailyStatsIterator === null) {
+            $offset = (($this->getCurrentPage() - 1) * $this->getItemsPerPage());
             $this->dailyStatsIterator = new \ArrayIterator(
-                $this->statsHelper->fetchMany()
+                $this->statsHelper->fetchMany(
+                    $this->getItemsPerPage(),
+                    $offset
+                )
             );
         }
         return $this->dailyStatsIterator;

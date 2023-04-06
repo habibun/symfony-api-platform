@@ -15,6 +15,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
         new GetCollection(),
     ],
     normalizationContext: ['groups' => ['daily-stats:read'], 'swagger_definition_name' => 'Read'],
+    paginationItemsPerPage: 7
 )]
 class DailyStats
 {
