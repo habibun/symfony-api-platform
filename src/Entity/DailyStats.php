@@ -26,6 +26,8 @@ class DailyStats
 
     /**
      * The 5 most popular cheese listings from this date!
+     * 
+     * @var array<Product>|Product[]
      */
     #[Groups(['daily-stats:read'])]
     public $mostPopularListings;
