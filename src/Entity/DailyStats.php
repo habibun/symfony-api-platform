@@ -7,14 +7,17 @@ use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Put;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ApiResource(
     operations: [
         new Get(),
         new GetCollection(),
+        new Put(),
     ],
     normalizationContext: ['groups' => ['daily-stats:read'], 'swagger_definition_name' => 'Read'],
+    denormalizationContext: ['groups' => ['daily-stats:write'], 'swagger_definition_name' => 'Write'],
     paginationItemsPerPage: 7
 )]
 class DailyStats
@@ -30,7 +33,7 @@ class DailyStats
      * 
      * @var array<Product>|Product[]
      */
-    #[Groups(['daily-stats:read'])]
+    #[Groups(['daily-stats:read', 'daily-stats:write'])]
     public $mostPopularListings;
 
     /**
