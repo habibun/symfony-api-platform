@@ -8,8 +8,21 @@ use App\Entity\Product;
 
 class ProductInputDataTransformer implements DataTransformerInterface
 {
-    public function transform($object, string $to, array $context = [])
+    /**
+     * @param ProductInput $input
+     * @param string $to
+     * @param array $context
+     *
+     * @return Product
+     */
+    public function transform($input, string $to, array $context = [])
     {
+        $cheeseListing = new Product($input->name);
+        $cheeseListing->setDescription($input->description);
+        $cheeseListing->setPrice($input->price);
+        $cheeseListing->setManufacturer($input->manufacturer);
+        $cheeseListing->setIsActive($input->isActive);
+        return $cheeseListing;
     }
     public function supportsTransformation($data, string $to, array $context = []): bool
     {

@@ -27,13 +27,13 @@ class ProductInput
     #[Groups('product:write')]
     public bool $isActive = false;
 
-    public $description;
+    public string $description;
 
     /**
      * @var User|null
      */
     #[Groups(['product:collection:post'])]
-    private ?User $manufacturer = null;
+    public ?User $manufacturer = null;
 
     /** Description of product as raw text. */
     #[Groups(['product:write', 'user:write'])]
