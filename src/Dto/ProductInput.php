@@ -2,6 +2,7 @@
 
 namespace App\Dto;
 
+use App\Entity\User;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -27,6 +28,12 @@ class ProductInput
     public bool $isActive = false;
 
     public $description;
+
+    /**
+     * @var User|null
+     */
+    #[Groups(['product:collection:post'])]
+    private ?User $manufacturer = null;
 
     /** Description of product as raw text. */
     #[Groups(['product:write', 'user:write'])]

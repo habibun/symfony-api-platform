@@ -86,7 +86,6 @@ class Product
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'products')]
     #[ORM\JoinColumn(name: 'manufacturer_id', referencedColumnName: 'id', nullable: false)]
-    #[Groups(['product:collection:post'])]
     #[AppValidator\isValidManufacturer()]
     private ?User $manufacturer = null;
 
