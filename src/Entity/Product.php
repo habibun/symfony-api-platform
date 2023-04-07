@@ -15,6 +15,7 @@ use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use ApiPlatform\Serializer\Filter\PropertyFilter;
 use App\ApiPlatform\ProductSearchFilter;
+use App\Dto\ProductOutput;
 use App\Repository\ProductRepository;
 use App\Validator as AppValidator;
 use Carbon\Carbon;
@@ -37,6 +38,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     formats: ['jsonld', 'json', 'html', 'jsonhal', 'csv' => ['text/csv']],
     normalizationContext: ['groups' => ['product:read'], 'swagger_definition_name' => 'Read'],
     denormalizationContext: ['groups' => ['product:write'], 'swagger_definition_name' => 'Write'],
+    output: ProductOutput::class,
     paginationItemsPerPage: 10
 )]
 #[ApiFilter(BooleanFilter::class, properties: ['isActive'])]
