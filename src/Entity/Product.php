@@ -14,6 +14,7 @@ use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use ApiPlatform\Serializer\Filter\PropertyFilter;
+use App\ApiPlatform\ProductSearchFilter;
 use App\Repository\ProductRepository;
 use App\Validator as AppValidator;
 use Carbon\Carbon;
@@ -47,6 +48,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 ])]
 #[ApiFilter(RangeFilter::class, properties: ['price'])]
 #[ApiFilter(PropertyFilter::class)]
+#[ApiFilter(ProductSearchFilter::class)]
 #[ORM\EntityListeners(['App\Doctrine\ProductSetManufacturerListener'])]
 #[AppValidator\ValidIsActive()]
 class Product
