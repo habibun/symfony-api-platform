@@ -3,11 +3,13 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Action\NotFoundAction;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Put;
+use App\ApiPlatform\DailyStatsDateFilter;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ApiResource(
@@ -20,6 +22,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
     denormalizationContext: ['groups' => ['daily-stats:write'], 'swagger_definition_name' => 'Write'],
     paginationItemsPerPage: 7
 )]
+#[ApiFilter(DailyStatsDateFilter::class)]
 class DailyStats
 {
     #[Groups(['daily-stats:read'])]

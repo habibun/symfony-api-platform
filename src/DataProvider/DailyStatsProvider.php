@@ -24,12 +24,13 @@ class DailyStatsProvider implements CollectionDataProviderInterface, ItemDataPro
     public function getCollection(string $resourceClass, string $operationName = null)
     {
         list($page, $offset, $limit) = $this->pagination->getPagination($resourceClass, $operationName);
-        return new DailyStatsPaginator(
+        $paginator = new DailyStatsPaginator(
             $this->statsHelper,
             $page,
             $limit
         );
-
+        $paginator->setFromDate(new \DateTime('2020-08-30'));
+        return $paginator;
     }
 
     public function getItem(string $resourceClass, $id, string $operationName = null, array $context = [])
