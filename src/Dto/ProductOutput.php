@@ -12,10 +12,10 @@ class ProductOutput
     /**
      * The title of this listing
      */
-    #[Groups(['product:read'])]
+    #[Groups(['product:read', "user:read"])]
     public $name;
 
-    #[Groups(['product:read'])]
+    #[Groups(['product:read', "user:read"])]
     public float $price = 0;
 
     #[Groups(['product:read'])]

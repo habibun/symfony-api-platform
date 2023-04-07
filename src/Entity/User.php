@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
 use ApiPlatform\Metadata\ApiFilter;
@@ -218,6 +219,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[Groups(['user:read'])]
     #[SerializedName('products')]
+    #[ApiProperty(readableLink: true)]
     public function getActiveProducts(): Collection
     {
         return $this->products->filter(function(Product $product) {

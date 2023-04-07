@@ -68,7 +68,7 @@ class Product
             'maxMessage'=>"Describe your name in 50 chars or less"
         ]
     )]
-    #[Groups(['product:read','product:write', 'user:read', 'user:write'])]
+    #[Groups(['product:write', 'user:write'])]
     #[ORM\Column(length: 255)]
     private string $name;
 
@@ -80,7 +80,6 @@ class Product
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $created;
 
-    #[Groups(['product:read', 'user:write'])]
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
@@ -90,7 +89,7 @@ class Product
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'products')]
     #[ORM\JoinColumn(name: 'manufacturer_id', referencedColumnName: 'id', nullable: false)]
-    #[Groups(['product:read', 'product:collection:post'])]
+    #[Groups(['product:collection:post'])]
     #[AppValidator\isValidManufacturer()]
     private ?User $manufacturer = null;
 
@@ -133,25 +132,9 @@ class Product
         return $this->created;
     }
 
-    #[Groups(['product:read'])]
-    public function getCreatedAgo(): string
-    {
-        return Carbon::instance($this->getCreated())->diffForHumans();
-    }
-
     public function getDescription(): ?string
     {
         return $this->description;
-    }
-
-    #[Groups('product:read')]
-    public function getShortDescription(): ?string
-    {
-        if (strlen($this->description) < 40) {
-            return $this->description;
-        }
-
-        return substr($this->description, 0, 40) . '...';
     }
 
     public function setDescription(?string $description): Product
