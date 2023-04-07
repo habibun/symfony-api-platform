@@ -8,10 +8,21 @@ use App\Entity\Product;
 
 class ProductOutputDataTransformer implements DataTransformerInterface
 {
+    /**
+     * @param Product $product
+     * @param string $to
+     * @param array $context
+     *
+     * @return ProductOutput
+     */
     public function transform($product, string $to, array $context = [])
     {
         $output = new ProductOutput();
-        $output->title = $product->getTitle();
+        $output->name = $product->getName();
+        $output->description = $product->getDescription();
+        $output->price = $product->getPrice();
+        $output->price = $product->getPrice();
+        $output->createdAt = $product->getCreated();
 
         return $output;
     }
