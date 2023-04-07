@@ -48,7 +48,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 ])]
 #[ApiFilter(RangeFilter::class, properties: ['price'])]
 #[ApiFilter(PropertyFilter::class)]
-#[ApiFilter(ProductSearchFilter::class)]
+#[ApiFilter(ProductSearchFilter::class, arguments: ['useLike'=> true])]
 #[ORM\EntityListeners(['App\Doctrine\ProductSetManufacturerListener'])]
 #[AppValidator\ValidIsActive()]
 class Product
