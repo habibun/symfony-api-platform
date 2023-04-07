@@ -22,7 +22,6 @@ use Carbon\Carbon;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
@@ -38,6 +37,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     formats: ['jsonld', 'json', 'html', 'jsonhal', 'csv' => ['text/csv']],
     normalizationContext: ['groups' => ['product:read'], 'swagger_definition_name' => 'Read'],
     denormalizationContext: ['groups' => ['product:write'], 'swagger_definition_name' => 'Write'],
+    input: ProductOutput::CLASS,
     output: ProductOutput::class,
     paginationItemsPerPage: 10
 )]
@@ -68,12 +68,10 @@ class Product
             'maxMessage'=>"Describe your name in 50 chars or less"
         ]
     )]
-    #[Groups(['product:write', 'user:write'])]
     #[ORM\Column(length: 255)]
     private string $name;
 
     #[Assert\NotBlank]
-    #[Groups(['product:read', 'product:write', 'user:read', 'user:write'])]
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: '0')]
     private float $price = 0;
 
@@ -83,7 +81,6 @@ class Product
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
-    #[Groups('product:write')]
     #[ORM\Column]
     private bool $isActive = false;
 
@@ -140,16 +137,6 @@ class Product
     public function setDescription(?string $description): Product
     {
         $this->description = $description;
-
-        return $this;
-    }
-
-    /** Description of product as raw text. */
-    #[Groups(['product:write', 'user:write'])]
-    #[SerializedName('description')]
-    public function setTextDescription(?string $description): self
-    {
-        $this->description = nl2br($description);
 
         return $this;
     }
