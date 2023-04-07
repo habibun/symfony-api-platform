@@ -22,7 +22,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
     denormalizationContext: ['groups' => ['daily-stats:write'], 'swagger_definition_name' => 'Write'],
     paginationItemsPerPage: 7
 )]
-#[ApiFilter(DailyStatsDateFilter::class)]
+#[ApiFilter(DailyStatsDateFilter::class, arguments: ['throwOnInvalid' => true])]
 class DailyStats
 {
     #[Groups(['daily-stats:read'])]
