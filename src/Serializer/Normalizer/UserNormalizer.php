@@ -25,7 +25,7 @@ class UserNormalizer implements ContextAwareNormalizerInterface, CacheableSuppor
         $this->security = $security;
     }
 
-    public function normalize($object, $format = null, array $context = array()): array
+    public function normalize($object, $format = null, array $context = array())
     {
         $isOwner = $this->userIsOwner($object);
         if ($isOwner) {

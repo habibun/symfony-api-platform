@@ -2,6 +2,7 @@
 
 namespace App\Dto;
 
+use App\Entity\User;
 use Carbon\Carbon;
 use Doctrine\DBAL\Types\Types;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -19,6 +20,9 @@ class ProductOutput
 
     #[Groups(['product:read'])]
     public ?string $description = null;
+
+    #[Groups(['product:read'])]
+    public ?User $manufacturer = null;
 
     public $createdAt;
 

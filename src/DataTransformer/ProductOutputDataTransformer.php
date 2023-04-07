@@ -23,6 +23,7 @@ class ProductOutputDataTransformer implements DataTransformerInterface
         $output->price = $product->getPrice();
         $output->price = $product->getPrice();
         $output->createdAt = $product->getCreated();
+        $output->manufacturer = $product->getManufacturer();
 
         return $output;
     }
