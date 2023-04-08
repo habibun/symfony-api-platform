@@ -60,33 +60,23 @@ class Product
     #[ORM\Column]
     private int $id;
 
-    #[Assert\NotBlank]
-    #[Assert\Length(
-        [
-            'min' => 2,
-            'max' => 50,
-            'maxMessage'=>"Describe your name in 50 chars or less"
-        ]
-    )]
     #[ORM\Column(length: 255)]
     private string $name;
 
-    #[Assert\NotBlank]
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: '0')]
     private float $price = 0;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $created;
 
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $description = null;
+    #[ORM\Column(type: Types::TEXT)]
+    private string $description;
 
     #[ORM\Column]
     private bool $isActive = false;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'products')]
     #[ORM\JoinColumn(name: 'manufacturer_id', referencedColumnName: 'id', nullable: false)]
-    #[AppValidator\isValidManufacturer()]
     private ?User $manufacturer = null;
 
     public function __construct(string $name)

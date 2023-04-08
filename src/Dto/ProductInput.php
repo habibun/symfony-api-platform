@@ -7,6 +7,7 @@ use App\Entity\User;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
+use App\Validator as AppValidator;
 
 class ProductInput
 {
@@ -28,12 +29,14 @@ class ProductInput
     #[Groups('product:write')]
     public bool $isActive = false;
 
+    #[Assert\NotBlank]
     public string $description;
 
     /**
      * @var User|null
      */
     #[Groups(['product:collection:post'])]
+    #[AppValidator\isValidManufacturer()]
     public ?User $manufacturer = null;
 
     /** Description of product as raw text. */
@@ -64,10 +67,10 @@ class ProductInput
     public function createOrUpdateEntity(?Product $product): Product
     {
         if (!$product) {
-            $product = new Product((string) $this->name);
+            $product = new Product($this->name);
         }
-        $product->setDescription((string) $this->description);
-        $product->setPrice((float) $this->price);
+        $product->setDescription($this->description);
+        $product->setPrice($this->price);
         $product->setManufacturer($this->manufacturer);
         $product->setIsActive($this->isActive);
         return $product;
