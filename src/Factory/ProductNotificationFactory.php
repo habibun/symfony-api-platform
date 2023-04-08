@@ -22,7 +22,7 @@ final class ProductNotificationFactory extends ModelFactory
     protected function getDefaults(): array
     {
         return [
-            'cheeseListing' => ProductFactory::new(),
+            'product' => ProductFactory::new(),
             'notificationText' => self::faker()->realText(50),
         ];
     }

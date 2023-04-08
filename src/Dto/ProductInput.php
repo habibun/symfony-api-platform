@@ -44,4 +44,31 @@ class ProductInput
 
         return $this;
     }
+
+    public static function createFromEntity(?Product $product): self
+    {
+        $dto = new ProductInput();
+        // not an edit, so just return an empty DTO
+        if (!$product) {
+            return $dto;
+        }
+        $dto->title = $product->getTitle();
+        $dto->price = $product->getPrice();
+        $dto->description = $product->getDescription();
+        $dto->owner = $product->getOwner();
+        $dto->isPublished = $product->getIsPublished();
+        return $dto;
+    }
+
+    public function createOrUpdateEntity(?Product $product): Product
+    {
+        if (!$product) {
+            $product = new Product($this->title);
+        }
+        $product->setDescription($this->description);
+        $product->setPrice($this->price);
+        $product->setOwner($this->owner);
+        $product->setIsPublished($this->isPublished);
+        return $product;
+    }
 }

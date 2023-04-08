@@ -17,15 +17,8 @@ class ProductOutputDataTransformer implements DataTransformerInterface
      */
     public function transform($product, string $to, array $context = [])
     {
-        $output = new ProductOutput();
-        $output->name = $product->getName();
-        $output->description = $product->getDescription();
-        $output->price = $product->getPrice();
-        $output->price = $product->getPrice();
-        $output->createdAt = $product->getCreated();
-        $output->manufacturer = $product->getManufacturer();
+        return ProductOutput::createFromEntity($product);
 
-        return $output;
     }
 
     public function supportsTransformation($data, string $to, array $context = []): bool

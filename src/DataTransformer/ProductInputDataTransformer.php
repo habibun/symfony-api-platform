@@ -18,17 +18,9 @@ class ProductInputDataTransformer implements DataTransformerInterface
      */
     public function transform($input, string $to, array $context = [])
     {
-        if (isset($context[AbstractItemNormalizer::OBJECT_TO_POPULATE])) {
-            $cheeseListing = $context[AbstractItemNormalizer::OBJECT_TO_POPULATE];
-        } else {
-            $cheeseListing = new Product($input->name);
-        }
+        $product = $context[AbstractItemNormalizer::OBJECT_TO_POPULATE] ?? null;
 
-        $cheeseListing->setDescription($input->description);
-        $cheeseListing->setPrice($input->price);
-        $cheeseListing->setManufacturer($input->manufacturer);
-        $cheeseListing->setIsActive($input->isActive);
-        return $cheeseListing;
+        return $input->createOrUpdateEntity($product);
     }
     public function supportsTransformation($data, string $to, array $context = []): bool
     {

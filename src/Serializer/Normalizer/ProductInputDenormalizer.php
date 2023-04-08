@@ -37,19 +37,10 @@ class ProductInputDenormalizer implements DenormalizerInterface, CacheableSuppor
     private function createDto(array $context): ProductInput
     {
         $entity = $context['object_to_populate'] ?? null;
-        $dto = new ProductInput();
-        // not an edit, so just return an empty DTO
-        if (!$entity) {
-            return $dto;
-        }
-        if (!$entity instanceof Product) {
+        if ($entity && !$entity instanceof Product) {
             throw new \Exception(sprintf('Unexpected resource class "%s"', get_class($entity)));
         }
-        $dto->title = $entity->getName();
-        $dto->price = $entity->getPrice();
-        $dto->description = $entity->getDescription();
-        $dto->owner = $entity->getManufacturer();
-        $dto->isPublished = $entity->getIsActive();
-        return $dto;
+
+        return ProductInput::createFromEntity($entity);
     }
 }

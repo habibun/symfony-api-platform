@@ -43,4 +43,15 @@ class ProductOutput
     {
         return Carbon::instance($this->getCreatedAt())->diffForHumans();
     }
+
+    public static function createFromEntity(Product $product): self
+    {
+        $output = new ProductOutput();
+        $output->title = $product->getTitle();
+        $output->description = $product->getDescription();
+        $output->price = $product->getPrice();
+        $output->owner = $product->getOwner();
+        $output->createdAt = $product->getCreatedAt();
+        return $output;
+    }
 }
