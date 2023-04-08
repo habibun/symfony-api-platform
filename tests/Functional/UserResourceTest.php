@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Factory\UserFactory;
 use App\Test\CustomApiTestCase;
 use Hautelook\AliceBundle\PhpUnit\ReloadDatabaseTrait;
+use Ramsey\Uuid\Uuid;
 
 class UserResourceTest extends CustomApiTestCase
 {
@@ -32,6 +33,26 @@ class UserResourceTest extends CustomApiTestCase
             '@id' => '/api/users/'.$user->getUuid()->toString()
         ]);
     }
+
+    public function testCreateUserWithUuid()
+    {
+        $client = self::createClient();
+
+        $uuid = Uuid::uuid4();
+        $client->request('POST', '/api/users', [
+            'json' => [
+                'id' => $uuid,
+                'email' => 'cheeseplease@example.com',
+                'username' => 'cheeseplease',
+                'password' => 'brie'
+            ],
+        ]);
+        $this->assertResponseStatusCodeSame(201);
+        $this->assertJsonContains([
+            '@id' => '/api/users/'.$uuid
+        ]);
+    }
+
 
     public function testUpdateUser()
     {

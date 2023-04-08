@@ -62,6 +62,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ApiProperty(identifier: false)]
     private ?int $id = null;
 
+    #[Groups('user:write')]
     #[ORM\Column(type: 'uuid', unique: true)]
     #[ApiProperty(identifier: true)]
     private $uuid;
@@ -112,10 +113,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $isMvp = false;
 
-    public function __construct()
+    public function __construct(UuidInterface $uuid = null)
     {
         $this->products = new ArrayCollection();
-        $this->uuid = Uuid::uuid4();
+        $this->uuid = $uuid ?: Uuid::uuid4();
     }
 
     public function getId(): ?int
