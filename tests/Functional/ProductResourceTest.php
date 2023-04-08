@@ -131,7 +131,7 @@ class ProductResourceTest extends CustomApiTestCase
         $client->request('GET', '/api/products/'.$product1->getId());
         $this->assertResponseStatusCodeSame(404);
 
-        $client->request('GET', '/api/users/'.$user->getId());
+        $client->request('GET', '/api/users/'.$user->getUuid());
         $data = $client->getResponse()->toArray();
         $this->assertEmpty($data['products']);
     }

@@ -25,6 +25,12 @@ class UserResourceTest extends CustomApiTestCase
 
         $this->assertResponseStatusCodeSame(201);
         $this->logIn($client, 'productplease@example.com', 'brie');
+
+        $user = UserFactory::repository()->findOneBy(['email' => 'cheeseplease@example.com']);
+        $this->assertNotNull($user);
+        $this->assertJsonContains([
+            '@id' => '/api/users/'.$user->getUuid()->toString()
+        ]);
     }
 
     public function testUpdateUser()
@@ -32,7 +38,7 @@ class UserResourceTest extends CustomApiTestCase
         $client = self::createClient();
         $user = $this->createUserAndLogIn($client, 'productplease@example.com', 'foo');
 
-        $client->request('PUT', '/api/users/'.$user->getId(), [
+        $client->request('PUT', '/api/users/'.$user->getUuid(), [
             'json' => [
                 'username' => 'newusername',
                 'roles' => ['ROLE_ADMIN'] // will be ignored
@@ -41,7 +47,7 @@ class UserResourceTest extends CustomApiTestCase
 
         $em = $this->getEntityManager();
         /** @var User $user */
-        $user = $em->getRepository(User::class)->find($user->getId());
+        $user = $em->getRepository(User::class)->find($user->getUuid());
         $this->assertEquals(['ROLE_USER'], $user->getRoles());
 
         $this->assertResponseIsSuccessful();
