@@ -7,7 +7,6 @@ use ApiPlatform\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use ApiPlatform\Metadata\Operation;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Component\PropertyInfo\Type;
 use Symfony\Component\Serializer\NameConverter\NameConverterInterface;
 
 final class ProductSearchFilter extends AbstractFilter
@@ -16,7 +15,7 @@ final class ProductSearchFilter extends AbstractFilter
 
     public function __construct(ManagerRegistry $managerRegistry, bool $useLike = false, NameConverterInterface $nameConverter = null)
     {
-        parent::__construct($managerRegistry, null, null, [], $nameConverter);
+        parent::__construct($managerRegistry, null, null, $nameConverter);
         $this->useLike = $useLike;
 
     }
