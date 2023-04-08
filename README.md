@@ -17,8 +17,14 @@ Please check the [projects](#projects) section for more details.
 <p>  
 
 <img
-src="xx"
-alt="xx"
+src="https://user-images.githubusercontent.com/5810350/230716121-d2dd0ce9-4942-4a14-a8db-6551d2d9b10d.png"
+alt="Api platform 2 extending frontend"
+width="50%"
+/>
+
+<img
+src="https://user-images.githubusercontent.com/5810350/230716134-0b505341-a0e4-4662-9783-b7e869871357.png"
+alt="API Platform2 extending backend"
 width="50%"
 />
 
