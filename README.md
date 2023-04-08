@@ -13,7 +13,7 @@ Please check the [projects](#projects) section for more details.
 
 ## Projects
 
-<details><summary>Sample application using API Platform V2 Custom Resources :construction: </summary>  
+<details><summary> Sample application using API Platform V2 Custom Resources </summary>  
 <p>  
 
 <img
@@ -33,16 +33,41 @@ width="50%"
 - [API Platform Part 3: Custom Resources](https://symfonycasts.com/screencast/api-platform-extending)
 <br/>
 
+### Prerequisites
+- [Symfony CLI][symfony_cli], [PHP][php], [Composer][composer], [Git][git], [Node.js][node]
 
-#### Installation
-```bash
+
+### Installation
+
+```bash 
+# Clone the repository using the command
 git clone git@github.com:habibun/symfony-api-platform.git
+
+# Navigate into the cloned directory
 cd symfony-api-platform
+
+# Checkout to project branch
 git checkout v2-extending
-symfony composer install
+
+# Create .env.local file
+make init
 ```
 
+Configure the database connection in the .env.local file
+
+```bash 
+# Install project
+make install
+
+# Start the local development server
+make start
+```
+
+Please check more rules in [Makefile][v2_extending_makefile].
+
 </p>
+
+##
 </details>
 
 <details><summary>Sample application using API Platform V2 Security</summary>  
@@ -134,3 +159,11 @@ Distributed under the MIT License. See **[LICENSE][license]** for more informati
 
 [v2-extending]: https://github.com/habibun/symfony-api-platform/tree/v2-extending
 [v2-extending_tt]: https://github.com/habibun/symfony-api-platform/tree/v2-extending "Sample application using API Platform V2 Custom Resources"
+[v2_extending_makefile]: https://github.com/habibun/symfony-api-platform/blob/v2-extending/Makefile
+
+
+[symfony_cli]: https://symfony.com/download
+[php]: https://www.php.net/
+[composer]: https://getcomposer.org/
+[git]: https://git-scm.com/
+[node]: https://nodejs.org/
