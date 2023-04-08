@@ -111,6 +111,5 @@ class UserResourceTest extends CustomApiTestCase
             'phoneNumber' => '555.123.4567',
             'isMe' => true,
         ]);
-
     }
 }
