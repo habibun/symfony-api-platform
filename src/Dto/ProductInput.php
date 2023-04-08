@@ -2,6 +2,7 @@
 
 namespace App\Dto;
 
+use App\Entity\Product;
 use App\Entity\User;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\SerializedName;
@@ -52,23 +53,23 @@ class ProductInput
         if (!$product) {
             return $dto;
         }
-        $dto->title = $product->getTitle();
+        $dto->name = $product->getName();
         $dto->price = $product->getPrice();
         $dto->description = $product->getDescription();
-        $dto->owner = $product->getOwner();
-        $dto->isPublished = $product->getIsPublished();
+        $dto->manufacturer = $product->getManufacturer();
+        $dto->isActive = $product->getIsActive();
         return $dto;
     }
 
     public function createOrUpdateEntity(?Product $product): Product
     {
         if (!$product) {
-            $product = new Product($this->title);
+            $product = new Product((string) $this->name);
         }
-        $product->setDescription($this->description);
-        $product->setPrice($this->price);
-        $product->setOwner($this->owner);
-        $product->setIsPublished($this->isPublished);
+        $product->setDescription((string) $this->description);
+        $product->setPrice((float) $this->price);
+        $product->setManufacturer($this->manufacturer);
+        $product->setIsActive($this->isActive);
         return $product;
     }
 }
