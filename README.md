@@ -53,6 +53,13 @@ git checkout v2-extending
 make init
 ```
 
+In the .env.local file, configure the environment variables for docker compose
+
+```bash
+# Start docker compose services
+make up
+```
+
 Configure the database connection in the .env.local file
 
 ```bash 
